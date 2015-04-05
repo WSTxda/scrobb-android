@@ -327,8 +327,6 @@ public class LastFm extends Activity {
 					d.setMessage(getResources().getString(R.string.ERROR_SERVER_UNAVAILABLE));
 				}
 				d.show();
-			} else if(wse != null) {
-				LastFMApplication.getInstance().presentError(context, wse);
 			}
 
 			if(mDialog.isShowing()) {

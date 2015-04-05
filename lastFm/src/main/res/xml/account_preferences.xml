@@ -7,7 +7,7 @@
 
 	<PreferenceScreen
 		android:key="account_settings"
-		android:summary="Configure player, scrobbler, and sync settings"
+		android:summary="Configure scrobbler settings"
 		android:title="Last.fm Settings">
 		<intent
 			android:action="android.intent.action.VIEW"

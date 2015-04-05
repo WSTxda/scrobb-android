@@ -284,4 +284,6 @@
 	<string name="sync_prompt_body">Would you like to sync your Last.fm friends with your Android contacts?  This gives you quick access to your friends\' Last.fm status and profile information.  You can enable or disable this option at any time through the \'Accounts &amp; Sync\' settings page.</string>
 	<string name="cal_sync_prompt_title">Sync Last.fm Events</string>
 	<string name="cal_sync_prompt_body">Would you like to sync your Last.fm events with your Android calendar?  You can enable or disable this option at any time through the \'Accounts &amp; Sync\' settings page.</string>
+	<string name="prefs_cat_account_title">User account</string>
+	<string name="prefs_current_user_sum">Logged in as %1$s</string>
 </resources>

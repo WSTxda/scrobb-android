@@ -5,6 +5,8 @@ package fm.last.android.activity;
 
 import android.app.NotificationManager;
 import android.content.ComponentName;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 
 import fm.last.android.LastFMApplication;
+import fm.last.android.LastFm;
 import fm.last.android.R;
 
 /**
@@ -119,7 +122,28 @@ public class Preferences extends PreferenceActivity {
 		super.onCreate(icicle);
 
 		addPreferencesFromResource(R.xml.preferences_scrobbler);
+		addPreferencesFromResource(R.xml.preferences_account);
 		addPreferencesFromResource(R.xml.preferences_about);
+
+		SharedPreferences settings = getSharedPreferences(LastFm.PREFS, 0);
+
+		findPreference("current_user").setSummary(
+				getString(R.string.prefs_current_user_sum, settings.getString("lastfm_user", "-")));
+
+		findPreference("current_user").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				LastFMApplication.getInstance().logout();
+
+				Intent i = new Intent(Preferences.this, LastFm.class);
+
+				startActivity(i);
+				finish();
+				return true;
+			}
+
+		});
 
 		findPreference("scrobble").setOnPreferenceChangeListener(scrobbletoggle);
 		findPreference("scrobble_music_player").setOnPreferenceChangeListener(scrobbletoggle);
