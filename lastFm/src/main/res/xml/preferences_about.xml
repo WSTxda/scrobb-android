@@ -5,19 +5,12 @@
 	<PreferenceCategory android:title="@string/prefs_cat_about_title">
 		<Preference
 			android:key="tos"
-			android:title="@string/prefs_tos_title"
-			/>
+			android:title="@string/prefs_tos_title" />
 		<Preference
 			android:key="privacy"
-			android:title="@string/prefs_privacy_title"
-			/>
-		<Preference
-			android:key="changes"
-			android:title="@string/prefs_changes_title"
-			/>
+			android:title="@string/prefs_privacy_title" />
 		<Preference
 			android:key="version"
-			android:title="@string/prefs_version_title"
-			/>
+			android:title="@string/prefs_version_title" />
 	</PreferenceCategory>
 </PreferenceScreen>

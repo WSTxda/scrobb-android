@@ -26,19 +26,19 @@ public class Preferences extends PreferenceActivity {
 
 		public boolean onPreferenceClick(Preference preference) {
 			Intent i = null;
+
 			if(preference.getKey().equals("tos")) {
 				i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.last.fm/legal/terms"));
 			}
+
 			if(preference.getKey().equals("privacy")) {
 				i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.last.fm/legal/privacy"));
-			}
-			if(preference.getKey().equals("changes")) {
-				i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.last.fm/group/Last.fm+Android/forum/114391/_/589152"));
 			}
 
 			if(i != null) {
 				startActivity(i);
 			}
+
 			return false;
 		}
 	};
@@ -113,7 +113,6 @@ public class Preferences extends PreferenceActivity {
 
 		findPreference("tos").setOnPreferenceClickListener(urlClick);
 		findPreference("privacy").setOnPreferenceClickListener(urlClick);
-		findPreference("changes").setOnPreferenceClickListener(urlClick);
 
 		try {
 			findPreference("version").setSummary(getPackageManager().getPackageInfo("fm.last.android", 0).versionName);
