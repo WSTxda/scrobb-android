@@ -1,8 +1,0 @@
-<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:configure="fm.last.android.LastFm"
-                    android:initialLayout="@layout/widget"
-                    android:minHeight="64dip"
-                    android:minWidth="290dip"
-                    android:previewImage="@drawable/widgetpreview"
-                    android:resizeMode="none">
-</appwidget-provider>
