@@ -23,6 +23,7 @@ package fm.last.android.scrobbler;
 import android.content.Context;
 import android.content.Intent;
 import android.preference.PreferenceManager;
+
 import fm.last.android.LastFMApplication;
 
 /**
@@ -30,12 +31,14 @@ import fm.last.android.LastFMApplication;
  *
  */
 public class ScrobbleDroidIntentReceiver extends MusicIntentReceiver {
+
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if (!PreferenceManager.getDefaultSharedPreferences(LastFMApplication.getInstance()).getBoolean("scrobble_sdroid", true))
+		if(!PreferenceManager.getDefaultSharedPreferences(LastFMApplication.getInstance()).getBoolean("scrobble_sdroid", true)) {
 			return;
-		else
+		} else {
 			super.onReceive(context, intent);
+		}
 	}
 
 }

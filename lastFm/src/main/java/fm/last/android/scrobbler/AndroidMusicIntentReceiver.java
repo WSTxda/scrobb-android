@@ -20,21 +20,24 @@
  ***************************************************************************/
 package fm.last.android.scrobbler;
 
-import fm.last.android.LastFMApplication;
 import android.content.Context;
 import android.content.Intent;
 import android.preference.PreferenceManager;
+
+import fm.last.android.LastFMApplication;
 
 /**
  * @author sam
  *
  */
 public class AndroidMusicIntentReceiver extends MusicIntentReceiver {
+
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if (!PreferenceManager.getDefaultSharedPreferences(LastFMApplication.getInstance()).getBoolean("scrobble_music_player", true))
+		if(!PreferenceManager.getDefaultSharedPreferences(LastFMApplication.getInstance()).getBoolean("scrobble_music_player", true)) {
 			return;
-		else
+		} else {
 			super.onReceive(context, intent);
+		}
 	}
 }

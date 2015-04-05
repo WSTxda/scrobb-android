@@ -57,17 +57,17 @@ import fm.last.api.WSError;
 import fm.last.util.UrlUtil;
 
 public class LastFm extends Activity {
+
 	public static final String PREFS = "LoginPrefs";
+	String authInfo;
 	private boolean mLoginShown;
 	private EditText mPassField;
 	private EditText mUserField;
 	private Button mLoginButton;
 	private Button mSignupButton;
-
 	/** Specifies if the user has just signed up */
 	private boolean mNewUser = false;
-
-	String authInfo;
+	private LoginTask mLoginTask;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -81,33 +81,34 @@ public class LastFm extends Activity {
 
 		try {
 			new CheckUpdatesTask().execute((Void) null);
-		} catch (RejectedExecutionException e) {
-			
+		} catch(RejectedExecutionException e) {
+
 		}
-		
+
 		if(Integer.decode(Build.VERSION.SDK) >= 6) {
 			if(!AccountAuthenticatorService.hasLastfmAccount(this)) {
 				session_key = "";
 				LastFMApplication.getInstance().logout();
 			}
 		}
-		
-		if (!user.equals("") && !session_key.equals("")) {
+
+		if(!user.equals("") && !session_key.equals("")) {
 			if(getIntent().getAction() != null && getIntent().getAction().equals(Intent.ACTION_SEARCH)) {
 				String query = "";
-				
-				if(getIntent().getStringExtra(SearchManager.QUERY) != null)
+
+				if(getIntent().getStringExtra(SearchManager.QUERY) != null) {
 					query = getIntent().getStringExtra(SearchManager.QUERY);
-				else
+				} else {
 					query = getIntent().getData().toString();
+				}
 				Log.i("LastFm", "Query: " + query);
-			} else if (getIntent().getAction() != null && getIntent().getAction().equals("fm.last.android.sync.LOGIN")) {
+			} else if(getIntent().getAction() != null && getIntent().getAction().equals("fm.last.android.sync.LOGIN")) {
 				Intent intent = getIntent();
 				Bundle extras = intent.getExtras();
-				if (extras != null) {
+				if(extras != null) {
 					try {
 						AccountAuthenticatorService.addAccount(this, user, session_key, extras.getParcelable("accountAuthenticatorResponse"));
-					} catch (Exception e) {
+					} catch(Exception e) {
 						Log.i("Last.fm", "Unable to add account");
 					}
 				}
@@ -124,8 +125,9 @@ public class LastFm extends Activity {
 		setContentView(R.layout.login);
 		mPassField = (EditText) findViewById(R.id.password);
 		mUserField = (EditText) findViewById(R.id.username);
-		if (!user.equals(""))
+		if(!user.equals("")) {
 			mUserField.setText(user);
+		}
 		mLoginButton = (Button) findViewById(R.id.sign_in_button);
 		mSignupButton = (Button) findViewById(R.id.sign_up_button);
 		mUserField.setNextFocusDownId(R.id.password);
@@ -133,35 +135,38 @@ public class LastFm extends Activity {
 		mPassField.setOnKeyListener(new View.OnKeyListener() {
 
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				switch (event.getKeyCode()) {
-				case KeyEvent.KEYCODE_ENTER:
-					mLoginButton.setPressed(true);
-					mLoginButton.performClick();
-					return true;
+				switch(event.getKeyCode()) {
+					case KeyEvent.KEYCODE_ENTER:
+						mLoginButton.setPressed(true);
+						mLoginButton.performClick();
+						return true;
 				}
 				return false;
 			}
 		});
 
-		if (icicle != null) {
+		if(icicle != null) {
 			user = icicle.getString("username");
 			pass = icicle.getString("pass");
-			if (user != null)
+			if(user != null) {
 				mUserField.setText(user);
+			}
 
-			if (pass != null)
+			if(pass != null) {
 				mPassField.setText(pass);
+			}
 		}
 
 		mLoginButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				if (mLoginTask != null)
+				if(mLoginTask != null) {
 					return;
+				}
 
 				String user = mUserField.getText().toString();
 				String password = mPassField.getText().toString();
 
-				if (user.length() == 0 || password.length() == 0) {
+				if(user.length() == 0 || password.length() == 0) {
 					LastFMApplication.getInstance().presentError(v.getContext(), getResources().getString(R.string.ERROR_MISSINGINFO_TITLE),
 							getResources().getString(R.string.ERROR_MISSINGINFO));
 					return;
@@ -181,21 +186,9 @@ public class LastFm extends Activity {
 	}
 
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode != 0 || resultCode != RESULT_OK)
-			return;
-
-		mUserField.setText(data.getExtras().getString("username"));
-		mPassField.setText(data.getExtras().getString("password"));
-		mNewUser = true;
-		mLoginButton.requestFocus();
-		mLoginButton.performClick();
-	}
-
-	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		outState.putBoolean("loginshown", mLoginShown);
-		if (mLoginShown) {
+		if(mLoginShown) {
 			String user = mUserField.getText().toString();
 			String password = mPassField.getText().toString();
 			outState.putString("username", user);
@@ -204,11 +197,25 @@ public class LastFm extends Activity {
 		super.onSaveInstanceState(outState);
 	}
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode != 0 || resultCode != RESULT_OK) {
+			return;
+		}
+
+		mUserField.setText(data.getExtras().getString("username"));
+		mPassField.setText(data.getExtras().getString("password"));
+		mNewUser = true;
+		mLoginButton.requestFocus();
+		mLoginButton.performClick();
+	}
+
 	/**
 	 * In a task because it can take a while, and Android has a tendency to
 	 * panic and show the force quit/wait dialog quickly. And this blocks.
 	 */
 	private class LoginTask extends AsyncTaskEx<String, Void, Session> {
+
 		Context context;
 		ProgressDialog mDialog;
 		SessionInfo userSession;
@@ -231,10 +238,10 @@ public class LastFm extends Activity {
 
 			try {
 				return login(user, pass);
-			} catch (WSError e) {
+			} catch(WSError e) {
 				e.printStackTrace();
 				wse = e;
-			} catch (Exception e) {
+			} catch(Exception e) {
 				e.printStackTrace();
 				this.e = e;
 			}
@@ -248,14 +255,16 @@ public class LastFm extends Activity {
 			String md5Password = MD5.getInstance().hash(pass);
 			String authToken = MD5.getInstance().hash(user + md5Password);
 			Session session = server.getMobileSession(user, authToken);
-			if (session == null)
+			if(session == null) {
 				throw (new WSError("auth.getMobileSession", "auth failure", WSError.ERROR_AuthenticationFailed));
+			}
 			server = AndroidLastFmServerFactory.getServer();
 			userSession = server.getSessionInfo(session.getKey());
 			if(Integer.decode(Build.VERSION.SDK) >= 6) {
 				Parcelable authResponse = null;
-				if(getIntent() != null && getIntent().getExtras() != null)
+				if(getIntent() != null && getIntent().getExtras() != null) {
 					authResponse = getIntent().getExtras().getParcelable("accountAuthenticatorResponse");
+				}
 				AccountAuthenticatorService.addAccount(LastFm.this, user, pass, authResponse);
 			}
 			return session;
@@ -266,7 +275,7 @@ public class LastFm extends Activity {
 			mLoginButton.setEnabled(true);
 			mLoginTask = null;
 
-			if (session != null) {
+			if(session != null) {
 				SharedPreferences.Editor editor = getSharedPreferences(PREFS, 0).edit();
 				editor.putString("lastfm_user", session.getName());
 				editor.putString("lastfm_session_key", session.getKey());
@@ -274,7 +283,7 @@ public class LastFm extends Activity {
 				editor.putBoolean("remove_playlists", true);
 				editor.putBoolean("remove_tags", true);
 				editor.putBoolean("remove_loved", true);
-				
+
 				if(userSession != null) {
 					editor.putBoolean("lastfm_radio", userSession.getRadio());
 					editor.putBoolean("lastfm_freetrial", userSession.getFreeTrial());
@@ -286,23 +295,23 @@ public class LastFm extends Activity {
 
 				LastFMApplication.getInstance().session = session;
 
-				if (getIntent().getAction() != null && getIntent().getAction().equals("fm.last.android.sync.LOGIN")) {
+				if(getIntent().getAction() != null && getIntent().getAction().equals("fm.last.android.sync.LOGIN")) {
 					Intent intent = getIntent();
 					Bundle extras = intent.getExtras();
-					if (extras != null) {
+					if(extras != null) {
 						finish();
 					}
 				}
 
 				finish();
-			} else if (wse != null || (e != null && e.getMessage() != null)) {
+			} else if(wse != null || (e != null && e.getMessage() != null)) {
 				AlertDialog.Builder d = new AlertDialog.Builder(LastFm.this);
 				d.setIcon(android.R.drawable.ic_dialog_alert);
 				d.setNeutralButton(getString(R.string.common_ok), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 					}
 				});
-				if ((wse != null && wse.getCode() == WSError.ERROR_AuthenticationFailed) ||
+				if((wse != null && wse.getCode() == WSError.ERROR_AuthenticationFailed) ||
 						(e != null && e.getMessage().contains("code 403"))) {
 					d.setTitle(getResources().getString(R.string.ERROR_AUTH_TITLE));
 					d.setMessage(getResources().getString(R.string.ERROR_AUTH));
@@ -318,23 +327,22 @@ public class LastFm extends Activity {
 					d.setMessage(getResources().getString(R.string.ERROR_SERVER_UNAVAILABLE));
 				}
 				d.show();
-			} else if (wse != null) {
+			} else if(wse != null) {
 				LastFMApplication.getInstance().presentError(context, wse);
 			}
 
 			if(mDialog.isShowing()) {
 				try {
 					mDialog.dismiss();
-				} catch (Exception e) { //This occasionally fails
+				} catch(Exception e) { //This occasionally fails
 					e.printStackTrace();
 				}
 			}
 		}
 	}
 
-	private LoginTask mLoginTask;
-
 	private class CheckUpdatesTask extends AsyncTaskEx<Void, Void, Boolean> {
+
 		private String mUpdateURL = "";
 
 		@Override
@@ -344,11 +352,11 @@ public class LastFm extends Activity {
 			try {
 				URL url = new URL("http://cdn.last.fm/client/android/" + getPackageManager().getPackageInfo("fm.last.android", 0).versionName + ".txt");
 				mUpdateURL = UrlUtil.doGet(url);
-				if (mUpdateURL.startsWith("market://") || mUpdateURL.startsWith("http://")) {
+				if(mUpdateURL.startsWith("market://") || mUpdateURL.startsWith("http://")) {
 					success = true;
 					Log.i("Last.fm", "Update URL: " + mUpdateURL);
 				}
-			} catch (Exception e) {
+			} catch(Exception e) {
 				// No updates available! Yay!
 			}
 			return success;
@@ -356,7 +364,7 @@ public class LastFm extends Activity {
 
 		@Override
 		public void onPostExecute(Boolean result) {
-			if (result) {
+			if(result) {
 				NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 				Notification notification = new Notification(R.drawable.as_statusbar, getString(R.string.newversion_ticker_text), System.currentTimeMillis());
 				PendingIntent contentIntent = PendingIntent.getActivity(LastFm.this, 0, new Intent(Intent.ACTION_VIEW, Uri.parse(mUpdateURL)), 0);

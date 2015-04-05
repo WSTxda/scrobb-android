@@ -20,21 +20,21 @@
  ***************************************************************************/
 package fm.last.android.utils;
 
+import android.graphics.Bitmap;
+
 import java.util.Hashtable;
 import java.util.Map;
-
-import android.graphics.Bitmap;
 
 /**
  * Class responsible for caching downloaded images and holding references to
  * them.
- * 
+ *
  * @author Lukasz Wisniewski
  */
 public class ImageCache extends Hashtable<String, Bitmap> {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 

@@ -32,16 +32,16 @@ import fm.last.api.Session;
 
 /**
  * @author sam
- * 
+ *
  */
 public class MusicIntentReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Session s = LastFMApplication.getInstance().session;
-		if (s != null && s.getKey().length() > 0 && PreferenceManager.getDefaultSharedPreferences(LastFMApplication.getInstance()).getBoolean("scrobble", true)) {
-			if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-				if (ScrobblerQueueDao.getInstance().getQueueSize()<1) {
+		if(s != null && s.getKey().length() > 0 && PreferenceManager.getDefaultSharedPreferences(LastFMApplication.getInstance()).getBoolean("scrobble", true)) {
+			if(intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+				if(ScrobblerQueueDao.getInstance().getQueueSize() < 1) {
 					return;
 				}
 			}

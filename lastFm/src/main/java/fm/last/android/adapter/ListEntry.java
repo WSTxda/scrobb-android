@@ -25,14 +25,15 @@ import java.io.Serializable;
 /**
  * Elementary class to use with IconifiedListAdapter in order to provide
  * eye-candy ListViews
- * 
+ *
  * @author Lukasz Wisniewski
  */
 public class ListEntry implements Serializable {
+
 	private static final long serialVersionUID = -4113826543207097385L;
 
 	public boolean centerIcon = false;
-	
+
 	/**
 	 * Text that will appear in ListView's row
 	 */

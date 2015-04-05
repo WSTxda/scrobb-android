@@ -27,12 +27,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
+
 import fm.last.android.R;
 
 /**
  * This adapter is not representing any particular data however may be used to
  * place some notifications within a ListView widget
- * 
+ *
  * @author Lukasz Wisniewski
  */
 public class NotificationAdapter extends BaseAdapter {
@@ -54,7 +55,7 @@ public class NotificationAdapter extends BaseAdapter {
 
 	/**
 	 * Default constructor
-	 * 
+	 *
 	 * @param context
 	 */
 	public NotificationAdapter(Activity context) {
@@ -63,7 +64,7 @@ public class NotificationAdapter extends BaseAdapter {
 
 	/**
 	 * Constructor allowing to set adapter's mode and informative text
-	 * 
+	 *
 	 * @param context
 	 * @param mode
 	 *            Mode in which this adapter should operate,
@@ -89,17 +90,12 @@ public class NotificationAdapter extends BaseAdapter {
 		return 0;
 	}
 
-	@Override
-	public boolean isEnabled(int position) {
-		return false;
-	}
-
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = convertView;
 
 		ViewHolder holder;
 
-		if (row == null) {
+		if(row == null) {
 			LayoutInflater inflater = mContext.getLayoutInflater();
 			row = inflater.inflate(R.layout.list_row, null);
 
@@ -115,7 +111,7 @@ public class NotificationAdapter extends BaseAdapter {
 		holder.label.setText(mText);
 
 		// INFO_MODE
-		if (mMode == INFO_MODE) {
+		if(mMode == INFO_MODE) {
 			holder.vs.setVisibility(View.GONE);
 		} else { // LOAD_MODE
 			holder.vs.setDisplayedChild(1);
@@ -124,20 +120,14 @@ public class NotificationAdapter extends BaseAdapter {
 		return row;
 	}
 
-	/**
-	 * "Holder pattern implementation, performance boost"... well not really
-	 * here but I put it for my convenience
-	 * 
-	 * @author Lukasz Wisniewski
-	 */
-	static class ViewHolder {
-		TextView label;
-		ViewSwitcher vs;
+	@Override
+	public boolean isEnabled(int position) {
+		return false;
 	}
 
 	/**
 	 * Sets mode of the <code>NotificationAdapter</code>
-	 * 
+	 *
 	 * @param mode
 	 *            Mode in which this adapter should operate,
 	 *            <code>LOAD_MODE</code> or <code>INFO_MODE</code>
@@ -149,6 +139,18 @@ public class NotificationAdapter extends BaseAdapter {
 		this.mText = text;
 
 		notifyDataSetChanged();
+	}
+
+	/**
+	 * "Holder pattern implementation, performance boost"... well not really
+	 * here but I put it for my convenience
+	 *
+	 * @author Lukasz Wisniewski
+	 */
+	static class ViewHolder {
+
+		TextView label;
+		ViewSwitcher vs;
 	}
 
 }

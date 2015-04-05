@@ -12,13 +12,13 @@
 	<string name="action_amazon">Buy on Amazon</string>
 	<string name="action_share">Share</string>
 	<string name="action_tagtrack">Tag Track</string>
-    <string name="action_similar">Listen to Similar Artists</string>
-    <string name="action_addlibrary">Add to Library</string>
-    <string name="action_tag">Tag</string>
-    <string name="action_love">Love Track</string>
-    <string name="action_ban">Ban Track</string>
-    <string name="action_help">Help</string>
-    <string name="action_stop">Stop Station</string>
+	<string name="action_similar">Listen to Similar Artists</string>
+	<string name="action_addlibrary">Add to Library</string>
+	<string name="action_tag">Tag</string>
+	<string name="action_love">Love Track</string>
+	<string name="action_ban">Ban Track</string>
+	<string name="action_help">Help</string>
+	<string name="action_stop">Stop Station</string>
 	<string name="action_skip">Skip Track</string>
 	<string name="action_ontour">On Tour</string>
 	<string name="action_menu">Menu</string>
@@ -112,29 +112,29 @@
 	<!-- Profile activity -->
 	<string name="profile_label">Last.fm: Profile</string>
 	<string name="profile_myradio">Radio</string>
-    <string name="profile_userradio">%1$s\'s Radio</string>
+	<string name="profile_userradio">%1$s\'s Radio</string>
 	<string name="profile_myprofile">Profile</string>
 	<string name="profile_userprofile">%1$s\'s Profile</string>
 	<string name="profile_tracksplayed">plays</string>
-    <string name="profile_newstation">Start a New Station</string>
-    <string name="profile_mytags">My Tags</string>
-    <string name="profile_myrecs">Recommended by Last.fm</string>
-    <string name="profile_myneighborhood">Your Neighborhood</string>
-    <string name="profile_myloved">Your Loved Tracks</string>
-    <string name="profile_mylibrary">Your Library</string>
-    <string name="profile_mymix">Your Mix Radio</string>
-    <string name="profile_mystations">Your Stations</string>
-    <string name="profile_myfriends">Your Friends</string>
-    <string name="profile_recentstations">Recent Stations</string>
-    <string name="profile_commonartists">Common Artists</string>
-    <string name="profile_userneighborhood">%1$s\'s Neighborhood</string>
-    <string name="profile_userloved">%1$s\'s Loved Tracks</string>
-    <string name="profile_userlibrary">%1$s\'s Library</string>
-    <string name="profile_userstations">%1$s\'s Stations</string>
-    <string name="profile_userplaylists">%1$s\'s Playlists</string>
-    <string name="profile_usermix">%1$s\'s Mix Radio</string>
-    <string name="profile_userfriends">%1$s\'s Friends</string>
-    <string name="profile_myplaylists">Your Playlists</string>
+	<string name="profile_newstation">Start a New Station</string>
+	<string name="profile_mytags">My Tags</string>
+	<string name="profile_myrecs">Recommended by Last.fm</string>
+	<string name="profile_myneighborhood">Your Neighborhood</string>
+	<string name="profile_myloved">Your Loved Tracks</string>
+	<string name="profile_mylibrary">Your Library</string>
+	<string name="profile_mymix">Your Mix Radio</string>
+	<string name="profile_mystations">Your Stations</string>
+	<string name="profile_myfriends">Your Friends</string>
+	<string name="profile_recentstations">Recent Stations</string>
+	<string name="profile_commonartists">Common Artists</string>
+	<string name="profile_userneighborhood">%1$s\'s Neighborhood</string>
+	<string name="profile_userloved">%1$s\'s Loved Tracks</string>
+	<string name="profile_userlibrary">%1$s\'s Library</string>
+	<string name="profile_userstations">%1$s\'s Stations</string>
+	<string name="profile_userplaylists">%1$s\'s Playlists</string>
+	<string name="profile_usermix">%1$s\'s Mix Radio</string>
+	<string name="profile_userfriends">%1$s\'s Friends</string>
+	<string name="profile_myplaylists">Your Playlists</string>
 	<string name="profile_topartists">Top Artists</string>
 	<string name="profile_notopartists">No Top Artists</string>
 	<string name="profile_topalbums">Top Albums</string>
@@ -189,16 +189,16 @@
 	<string name="newstation_noresults">No results found</string>
 	<string name="newstation_artistradio">%1$s Radio</string>
 	<string name="newstation_tagradio">%1$s Tag Radio</string>
-	
-    <!-- Event activity -->
-    <string name="event_label">Last.fm: Event</string>
+
+	<!-- Event activity -->
+	<string name="event_label">Last.fm: Event</string>
 	<string name="event_showmap">Show Map</string>
 	<string name="event_buytickets">Buy Tickets</string>
 	<string name="event_attending">I\'m attending</string>
 	<string name="event_notattending">I\'m not attending</string>
 	<string name="event_maybe">I might attend</string>
 	<string name="event_saving">Saving Event</string>
-	
+
 	<!-- Player activity -->
 	<string name="player_label">Last.fm: Player</string>
 	<string name="player_tuning">Tuning</string>
@@ -206,22 +206,22 @@
 
 	<!-- RadioPlayer service -->
 	<string name="playerservice_label">Last.fm: Radio Player</string>
-    <string name="playerservice_error_ticker_text">An error occured during playback</string>
-    <string name="playerservice_paused_ticker_text">Last.fm Paused</string>
-    <string name="playerservice_paused_info">%1$s by \n %2$s</string>
-    <string name="playerservice_paused">Paused</string>
-    <string name="playerservice_streaming_ticker_text">Streaming: %1$s by %2$s</string>
-    <string name="playerservice_tuning">Tuning to station</string>
-    <string name="playerservice_tuningwithstation">Tuning: %1$s</string>
-    <string name="playerservice_trial_almost_expired_title">Free Trial Almost Over</string>
-    <string name="playerservice_trial_almost_expired">You have just %1$d tracks left.</string>
+	<string name="playerservice_error_ticker_text">An error occured during playback</string>
+	<string name="playerservice_paused_ticker_text">Last.fm Paused</string>
+	<string name="playerservice_paused_info">%1$s by \n %2$s</string>
+	<string name="playerservice_paused">Paused</string>
+	<string name="playerservice_streaming_ticker_text">Streaming: %1$s by %2$s</string>
+	<string name="playerservice_tuning">Tuning to station</string>
+	<string name="playerservice_tuningwithstation">Tuning: %1$s</string>
+	<string name="playerservice_trial_almost_expired_title">Free Trial Almost Over</string>
+	<string name="playerservice_trial_almost_expired">You have just %1$d tracks left.</string>
 
-    <!-- Scrobbler service -->
-    <string name="scrobbler_label">Last.fm: Scrobbler</string>
-    <string name="scrobbler_ticker_text">Scrobbling: %1$s by %2$s</string>
-    <string name="scrobbler_info_title">Now Scrobbling</string>
-    <string name="scrobbler_trackloved">The track was marked as Loved.</string>
-    <string name="scrobbler_trackbanned">The track was marked as Banned.</string>
+	<!-- Scrobbler service -->
+	<string name="scrobbler_label">Last.fm: Scrobbler</string>
+	<string name="scrobbler_ticker_text">Scrobbling: %1$s by %2$s</string>
+	<string name="scrobbler_info_title">Now Scrobbling</string>
+	<string name="scrobbler_trackloved">The track was marked as Loved.</string>
+	<string name="scrobbler_trackbanned">The track was marked as Banned.</string>
 
 	<string name="durationformat">
 		<xliff:g id="format">%2$d:%5$02d</xliff:g>
@@ -235,7 +235,7 @@
 	<string name="common_yes">Yes</string>
 	<string name="common_no">No</string>
 
-    <!-- error message dialogs -->
+	<!-- error message dialogs -->
 	<string name="ERROR_AUTH">Unable to log in to Last.fm.  Please check your username and password and try again.</string>
 	<string name="ERROR_AUTH_TITLE">Incorrect Login</string>
 	<string name="ERROR_INSUFFICIENT_CONTENT">There is not enough content available to play this station.  Please try another station.</string>
@@ -277,7 +277,7 @@
 	<!-- third party account access -->
 	<string name="account_access_title">Last.fm Account Access</string>
 	<string name="account_access_body">An application has requested access to your Last.fm profile.  Would you like to allow access?  Your password will not be shared.</string>
-	
+
 	<!-- sync provider -->
 	<string name="sync_only_one_account">Only one Last.fm account is supported.</string>
 	<string name="sync_prompt_title">Sync Last.fm Contacts</string>

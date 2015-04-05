@@ -22,7 +22,7 @@ package fm.last.android.utils;
 
 /**
  * Listener to asynchronous download of images
- * 
+ *
  * @author Lukasz Wisniewski
  */
 public interface ImageDownloaderListener {

@@ -20,26 +20,25 @@
  ***************************************************************************/
 package fm.last.android.utils;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Hashtable;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
-
 /**
  * Class responsible for downloading images asynchronously in a separate threads
- * 
+ *
  * @author Lukasz Wisniewski
  */
 public class ImageDownloader {
 
-	private static final String TASK_TAG_DEFAULT = "default";
-
 	protected static final String TAG = "ImageDownloader";
+	private static final String TASK_TAG_DEFAULT = "default";
 	ImageDownloaderListener mListener;
 	ImageCache mImageCache;
 
@@ -50,11 +49,11 @@ public class ImageDownloader {
 
 	/**
 	 * Default constructor
-	 * 
+	 *
 	 * @param imageCache
 	 */
 	public ImageDownloader(ImageCache imageCache) {
-		if (imageCache == null) {
+		if(imageCache == null) {
 			imageCache = new ImageCache();
 		}
 		this.mImageCache = imageCache;
@@ -68,7 +67,7 @@ public class ImageDownloader {
 
 	/**
 	 * Requests image download
-	 * 
+	 *
 	 * @param url
 	 */
 	public void getImage(String url) {
@@ -77,24 +76,14 @@ public class ImageDownloader {
 			URL imageUrl;
 
 			@Override
-			public void onPostExecute(Object result) {
-				if (mListener != null && imageUrl != null) {
-					mListener.imageDownloaded(imageUrl.toString());
-				}
-			}
-
-			@Override
-			public void onPreExecute() {
-			}
-
-			@Override
 			public Object doInBackground(String... params) {
 				String url = params[0];
 
-				if (url == null || url.trim().length() == 0)
+				if(url == null || url.trim().length() == 0) {
 					return null;
+				}
 				// check if we have already downloaded an url
-				if (!mImageCache.containsKey(url)) {
+				if(!mImageCache.containsKey(url)) {
 
 					InputStream stream = null;
 
@@ -105,27 +94,38 @@ public class ImageDownloader {
 							final Bitmap bmp = BitmapFactory.decodeStream(stream);
 							try {
 								mImageCache.put(url, bmp);
-							} catch (NullPointerException e) {
+							} catch(NullPointerException e) {
 								Log.e(TAG, "Failed to cache " + url);
 							}
-						} catch (OutOfMemoryError e) {
+						} catch(OutOfMemoryError e) {
 							Log.w(TAG, "Couldn't load bitmap from url: " + url, e);
-						} catch (Exception e) {
+						} catch(Exception e) {
 							Log.w(TAG, "Couldn't load bitmap from url: " + url, e);
 						} finally {
 							try {
-								if (stream != null) {
+								if(stream != null) {
 									stream.close();
 								}
-							} catch (IOException e) {
+							} catch(IOException e) {
 							}
 						}
-					} catch (MalformedURLException e) {
+					} catch(MalformedURLException e) {
 						Log.w(TAG, "Wrong url: " + url, e);
 					}
 				} // END: check if we have already downloaded an url
 
 				return null;
+			}
+
+			@Override
+			public void onPreExecute() {
+			}
+
+			@Override
+			public void onPostExecute(Object result) {
+				if(mListener != null && imageUrl != null) {
+					mListener.imageDownloaded(imageUrl.toString());
+				}
 			}
 
 		};
@@ -137,11 +137,11 @@ public class ImageDownloader {
 	/**
 	 * Returns AsyncTaskEx instance initialized with
 	 * getImages(ArrayList&lt;String&gt; urls) request
-	 * 
+	 *
 	 * @return
 	 */
 	public final AsyncTaskEx<String, Integer, Object> getAsyncTaskEx() {
-		if (mTasks.containsKey(TASK_TAG_DEFAULT)) {
+		if(mTasks.containsKey(TASK_TAG_DEFAULT)) {
 			return mTasks.get(TASK_TAG_DEFAULT);
 		}
 
@@ -151,11 +151,11 @@ public class ImageDownloader {
 	/**
 	 * Returns AsyncTaskEx instance initialized with
 	 * getImages(ArrayList&lt;String&gt; urls, String tag) request
-	 * 
+	 *
 	 * @return
 	 */
 	public final AsyncTaskEx<String, Integer, Object> getAsyncTaskEx(String tag) {
-		if (mTasks.containsKey(tag)) {
+		if(mTasks.containsKey(tag)) {
 			return mTasks.get(tag);
 		}
 

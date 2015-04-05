@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+
 import fm.last.android.AndroidLastFmServerFactory;
 import fm.last.android.LastFMApplication;
 import fm.last.android.R;
@@ -37,6 +38,7 @@ import fm.last.api.Session;
 import fm.last.api.WSError;
 
 public class SignUp extends Activity {
+
 	protected Button mSignUpButton;
 	protected Session mSession;
 	protected TextView mUsername;
@@ -45,7 +47,7 @@ public class SignUp extends Activity {
 
 	protected OnClickListener mOnSignUpClickListener = new OnClickListener() {
 		public void onClick(View v) {
-			new SignUpTask().execute((Void)null);
+			new SignUpTask().execute((Void) null);
 		}
 	};
 
@@ -67,22 +69,15 @@ public class SignUp extends Activity {
 		super.onResume();
 		try {
 			LastFMApplication.getInstance().tracker.trackPageView("/SignUp");
-		} catch (Exception e) {
+		} catch(Exception e) {
 			//Google Analytics doesn't appear to be thread safe
 		}
 	}
-	
+
 	private class SignUpTask extends AsyncTaskEx<Void, Void, Boolean> {
+
 		ProgressDialog mLoadDialog = null;
 		WSError mError = null;
-
-		@Override
-		public void onPreExecute() {
-			if (mLoadDialog == null) {
-				mLoadDialog = ProgressDialog.show(SignUp.this, "", getString(R.string.signup_saving), true, false);
-				mLoadDialog.setCancelable(true);
-			}
-		}
 
 		@Override
 		public Boolean doInBackground(Void... params) {
@@ -100,15 +95,15 @@ public class SignUp extends Activity {
 							"signup", // Action
 							"", // Label
 							0); // Value
-				} catch (Exception e) {
+				} catch(Exception e) {
 					//Google Analytics doesn't appear to be thread safe
 				}
 
 				setResult(RESULT_OK, new Intent().putExtra("username", username).putExtra("password", password));
 				return true;
-			} catch (WSError e) {
+			} catch(WSError e) {
 				mError = e;
-			} catch (Exception e) {
+			} catch(Exception e) {
 				e.printStackTrace();
 				mError = new WSError(e.getClass().getSimpleName(), e.getMessage(), -1);
 			}
@@ -116,20 +111,29 @@ public class SignUp extends Activity {
 		}
 
 		@Override
+		public void onPreExecute() {
+			if(mLoadDialog == null) {
+				mLoadDialog = ProgressDialog.show(SignUp.this, "", getString(R.string.signup_saving), true, false);
+				mLoadDialog.setCancelable(true);
+			}
+		}
+
+		@Override
 		public void onPostExecute(Boolean result) {
 			try {
-				if (mLoadDialog != null) {
+				if(mLoadDialog != null) {
 					mLoadDialog.dismiss();
 					mLoadDialog = null;
 				}
-			} catch (IllegalArgumentException e) {
+			} catch(IllegalArgumentException e) {
 				e.printStackTrace();
 			}
 			if(result) {
 				finish();
 			} else {
-				if(mError != null)
+				if(mError != null) {
 					LastFMApplication.getInstance().presentError(SignUp.this, mError);
+				}
 			}
 		}
 	}

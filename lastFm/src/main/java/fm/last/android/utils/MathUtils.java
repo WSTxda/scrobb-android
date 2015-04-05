@@ -22,14 +22,15 @@ package fm.last.android.utils;
 
 /**
  * Math equations
- * 
+ *
  * @author Lukasz Wisniewski
  */
 public class MathUtils {
+
 	/**
 	 * Calculates great-circle distance between two points on earth using the
 	 * Haversine formula
-	 * 
+	 *
 	 * @param lat1
 	 *            (in degrees)
 	 * @param lon1

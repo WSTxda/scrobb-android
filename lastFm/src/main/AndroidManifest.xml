@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="fm.last.android"
+<manifest package="fm.last.android"
+          xmlns:android="http://schemas.android.com/apk/res/android"
           android:versionCode="63"
           android:versionName="1.9.9.2">
 
@@ -28,17 +28,17 @@
 		android:required="false" />
 
 	<supports-screens
-		android:smallScreens="true"
-		android:normalScreens="true"
+		android:anyDensity="true"
 		android:largeScreens="true"
-		android:xlargeScreens="true"
-		android:anyDensity="true" />
+		android:normalScreens="true"
+		android:smallScreens="true"
+		android:xlargeScreens="true" />
 
 	<application
-		android:icon="@drawable/icon"
-		android:label="@string/app_name"
 		android:name="LastFMApplication"
+		android:icon="@drawable/icon"
 		android:installLocation="internalOnly"
+		android:label="@string/app_name"
 		android:theme="@style/BaseTheme">
 		<activity
 			android:name="LastFm"
@@ -125,8 +125,8 @@
 
 		<service
 			android:name=".scrobbler.ScrobblerService"
-			android:process=":scrobbler"
-			android:label="@string/scrobbler_label" />
+			android:label="@string/scrobbler_label"
+			android:process=":scrobbler" />
 		<service
 			android:name=".sync.AccountAuthenticatorService"
 			android:exported="true"

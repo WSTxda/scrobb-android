@@ -27,6 +27,7 @@ import android.view.animation.Transformation;
  * improve the effect.
  */
 public class Rotate3dAnimation extends Animation {
+
 	private final float mFromDegrees;
 	private final float mToDegrees;
 	private final float mCenterX;
@@ -43,7 +44,7 @@ public class Rotate3dAnimation extends Animation {
 	 * starts, a translation on the Z axis (depth) is performed. The length of
 	 * the translation can be specified, as well as whether the translation
 	 * should be reversed in time.
-	 * 
+	 *
 	 * @param fromDegrees
 	 *            the start angle of the 3D rotation
 	 * @param toDegrees
@@ -82,7 +83,7 @@ public class Rotate3dAnimation extends Animation {
 		final Matrix matrix = t.getMatrix();
 
 		camera.save();
-		if (mReverse) {
+		if(mReverse) {
 			camera.translate(0.0f, 0.0f, mDepthZ * interpolatedTime);
 		} else {
 			camera.translate(0.0f, 0.0f, mDepthZ * (1.0f - interpolatedTime));

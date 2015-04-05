@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package fm.last.android;
 
@@ -11,10 +11,11 @@ import android.content.pm.PackageManager;
 
 /**
  * @author sam
- * 
+ *
  */
 @SuppressWarnings("unused")
 public class Amazon {
+
 	private static final String ACTION_EXTERNAL_EVENT = "com.amazon.mp3.action.EXTERNAL_EVENT";
 	private static final String TYPE_TOP_MUSIC_BROWSE = "com.amazon.mp3.type.TOP_MUSIC_BROWSE";
 	private static final String TYPE_GENRE_BROWSE = "com.amazon.mp3.type.GENRE_BROWSE";
@@ -38,7 +39,7 @@ public class Amazon {
 		try {
 			PackageInfo pi = pm.getPackageInfo("com.amazon.mp3", PackageManager.GET_ACTIVITIES);
 			result = pi.versionCode;
-		} catch (Exception e) {
+		} catch(Exception e) {
 			result = -1;
 		}
 		return result;
@@ -54,14 +55,14 @@ public class Amazon {
 			intent.putExtra(EXTRA_SEARCH_STRING, query);
 			intent.putExtra(EXTRA_SEARCH_TYPE, SEARCH_TYPE_SONGS);
 			ctx.startActivity(intent);
-		} catch (Exception e) {
+		} catch(Exception e) {
 			try {
 				intent = new Intent(Intent.ACTION_SEARCH);
 				intent.setComponent(new ComponentName("com.amazon.mp3", "com.amazon.mp3.android.client.SearchActivity"));
 				intent.putExtra("actionSearchString", query);
 				intent.putExtra("actionSearchType", searchType);
 				ctx.startActivity(intent);
-			} catch (Exception e1) {
+			} catch(Exception e1) {
 				LastFMApplication.getInstance().presentError(ctx, ctx.getString(R.string.ERROR_AMAZON_TITLE), ctx.getString(R.string.ERROR_AMAZON));
 			}
 		}
@@ -77,14 +78,14 @@ public class Amazon {
 			intent.putExtra(EXTRA_SEARCH_STRING, query);
 			intent.putExtra(EXTRA_SEARCH_TYPE, SEARCH_TYPE_ALBUMS);
 			ctx.startActivity(intent);
-		} catch (Exception e) {
+		} catch(Exception e) {
 			try {
 				intent = new Intent(Intent.ACTION_SEARCH);
 				intent.setComponent(new ComponentName("com.amazon.mp3", "com.amazon.mp3.android.client.SearchActivity"));
 				intent.putExtra("actionSearchString", query);
 				intent.putExtra("actionSearchType", searchType);
 				ctx.startActivity(intent);
-			} catch (Exception e1) {
+			} catch(Exception e1) {
 				LastFMApplication.getInstance().presentError(ctx, ctx.getString(R.string.ERROR_AMAZON_TITLE), ctx.getString(R.string.ERROR_AMAZON));
 			}
 		}

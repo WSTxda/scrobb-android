@@ -44,14 +44,22 @@ import fm.last.util.UrlUtil;
 
 public class LastFMApplication extends Application {
 
+	private static LastFMApplication instance = null;
 	public Session session;
 	public fm.last.android.player.IRadioPlayer player = null;
 	public Context mCtx;
 	public GoogleAnalyticsTracker tracker;
-
 	private String mRequestedURL;
-	
-	private static LastFMApplication instance = null;
+	private ServiceConnection mConnection = new ServiceConnection() {
+
+		public void onServiceConnected(ComponentName className, IBinder service) {
+			player = fm.last.android.player.IRadioPlayer.Stub.asInterface(service);
+		}
+
+		public void onServiceDisconnected(ComponentName className) {
+			player = null;
+		}
+	};
 
 	public static LastFMApplication getInstance() {
 		if(instance != null) {
@@ -69,10 +77,10 @@ public class LastFMApplication extends Application {
 		String version;
 		try {
 			version = "/" + LastFMApplication.getInstance().getPackageManager().getPackageInfo("fm.last.android", 0).versionName;
-		} catch (Exception e) {
+		} catch(Exception e) {
 			version = "";
 		}
-		
+
 		UrlUtil.useragent = "MobileLastFM" + version + " (" + android.os.Build.MODEL + "; " + Locale.getDefault().getCountry().toLowerCase() + "; "
 				+ "Android " + android.os.Build.VERSION.RELEASE + ")";
 
@@ -81,28 +89,17 @@ public class LastFMApplication extends Application {
 		String username = settings.getString("lastfm_user", "");
 		String session_key = settings.getString("lastfm_session_key", "");
 		String subscriber = settings.getString("lastfm_subscriber", "0");
-		
+
 		session = new Session(username, session_key, subscriber);
 		tracker = GoogleAnalyticsTracker.getInstance();
 		tracker.start(PrivateAPIKey.ANALYTICS_ID, this);
-		
+
 		version = "0.1";
 		try {
 			version = getPackageManager().getPackageInfo("fm.last.android", 0).versionName;
-		} catch (NameNotFoundException e) {
+		} catch(NameNotFoundException e) {
 		}
 	}
-
-	private ServiceConnection mConnection = new ServiceConnection() {
-
-		public void onServiceConnected(ComponentName className, IBinder service) {
-			player = fm.last.android.player.IRadioPlayer.Stub.asInterface(service);
-		}
-
-		public void onServiceDisconnected(ComponentName className) {
-			player = null;
-		}
-	};
 
 	@Override
 	public void onTerminate() {
@@ -123,43 +120,44 @@ public class LastFMApplication extends Application {
 						error.getMethod(), // Action
 						error.getMessage(), // Label
 						0); // Value
-			} catch (Exception e) {
+			} catch(Exception e) {
 				//Google Analytics doesn't appear to be thread safe
 			}
-	
-			if (error.getMethod().equals("user.signUp")) {
+
+			if(error.getMethod().equals("user.signUp")) {
 				title = R.string.ERROR_SIGNUP_TITLE;
-				switch (error.getCode()) {
-				case WSError.ERROR_InvalidParameters:
-					presentError(ctx, getResources().getString(title), error.getMessage());
-					return;
-	
+				switch(error.getCode()) {
+					case WSError.ERROR_InvalidParameters:
+						presentError(ctx, getResources().getString(title), error.getMessage());
+						return;
+
 				}
 			}
 		}
-		
-		if (title == 0)
-			title = R.string.ERROR_SERVER_UNAVAILABLE_TITLE;
 
-		if (description == 0) {
+		if(title == 0) {
+			title = R.string.ERROR_SERVER_UNAVAILABLE_TITLE;
+		}
+
+		if(description == 0) {
 			if(error != null) {
-				switch (error.getCode()) {
-				case WSError.ERROR_AuthenticationFailed:
-				case WSError.ERROR_InvalidSession:
-					title = R.string.ERROR_SESSION_TITLE;
-					description = R.string.ERROR_SESSION;
-					break;
-				case WSError.ERROR_InvalidAPIKey:
-					title = R.string.ERROR_UPGRADE_TITLE;
-					description = R.string.ERROR_UPGRADE;
-					break;
-				case WSError.ERROR_SubscribersOnly:
-					title = R.string.ERROR_SUBSCRIPTION_TITLE;
-					description = R.string.ERROR_SUBSCRIPTION;
-					break;
-				default:
-					presentError(ctx, getResources().getString(title), getResources().getString(R.string.ERROR_SERVER_UNAVAILABLE) + "\n\n" + error.getMethod() + ": " + error.getMessage());
-					return;
+				switch(error.getCode()) {
+					case WSError.ERROR_AuthenticationFailed:
+					case WSError.ERROR_InvalidSession:
+						title = R.string.ERROR_SESSION_TITLE;
+						description = R.string.ERROR_SESSION;
+						break;
+					case WSError.ERROR_InvalidAPIKey:
+						title = R.string.ERROR_UPGRADE_TITLE;
+						description = R.string.ERROR_UPGRADE;
+						break;
+					case WSError.ERROR_SubscribersOnly:
+						title = R.string.ERROR_SUBSCRIPTION_TITLE;
+						description = R.string.ERROR_SUBSCRIPTION;
+						break;
+					default:
+						presentError(ctx, getResources().getString(title), getResources().getString(R.string.ERROR_SERVER_UNAVAILABLE) + "\n\n" + error.getMethod() + ": " + error.getMessage());
+						return;
 				}
 			} else {
 				description = R.string.ERROR_SERVER_UNAVAILABLE;
@@ -180,10 +178,10 @@ public class LastFMApplication extends Application {
 		});
 		try {
 			d.show();
-		} catch (Exception ignored) {
+		} catch(Exception ignored) {
 		}
 	}
-	
+
 	public void logout() {
 		SharedPreferences settings = getSharedPreferences(LastFm.PREFS, 0);
 		SharedPreferences.Editor editor = settings.edit();
@@ -212,7 +210,7 @@ public class LastFMApplication extends Application {
 			if(Integer.decode(Build.VERSION.SDK) >= 6) {
 				AccountAuthenticatorService.removeLastfmAccount(this);
 			}
-		} catch (Exception e) {
+		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
 	}

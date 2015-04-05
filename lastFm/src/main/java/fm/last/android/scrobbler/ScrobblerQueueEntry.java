@@ -26,10 +26,11 @@ import fm.last.api.RadioTrack;
 
 /**
  * Serializable queue entry class used by the scrobbler
- * 
+ *
  * @author Sam Steele <sam@last.fm>
  */
 public class ScrobblerQueueEntry implements Serializable {
+
 	private static final long serialVersionUID = 2L;
 	public String artist = "";
 	public String title = "";

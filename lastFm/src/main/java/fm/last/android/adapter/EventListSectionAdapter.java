@@ -20,22 +20,24 @@
  ***************************************************************************/
 package fm.last.android.adapter;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+
 import fm.last.android.R;
 import fm.last.api.Event;
 
 /**
  * ListView adapter for Events (section)
- * 
+ *
  * @author Lukasz Wisniewski
  */
 public class EventListSectionAdapter extends ListAdapter {
+
 	private static final long serialVersionUID = 2070559787839689784L;
 	private ArrayList<Event> mEvents;
 
@@ -45,7 +47,7 @@ public class EventListSectionAdapter extends ListAdapter {
 
 	/**
 	 * Default constructor
-	 * 
+	 *
 	 * @param context
 	 */
 	public EventListSectionAdapter(Activity context) {
@@ -61,7 +63,7 @@ public class EventListSectionAdapter extends ListAdapter {
 
 	/**
 	 * Sets data source for the adapter.
-	 * 
+	 *
 	 * @param events
 	 */
 	public void setEventsSource(ArrayList<Event> events) {
@@ -72,7 +74,7 @@ public class EventListSectionAdapter extends ListAdapter {
 
 	@Override
 	public int getCount() {
-		if (mEvents != null) {
+		if(mEvents != null) {
 			return mEvents.size();
 		}
 		return 0;
@@ -94,7 +96,7 @@ public class EventListSectionAdapter extends ListAdapter {
 
 		ViewHolder holder;
 
-		if (row == null) {
+		if(row == null) {
 			LayoutInflater inflater = mContext.getLayoutInflater();
 			row = inflater.inflate(R.layout.event_row, null);
 
@@ -129,10 +131,11 @@ public class EventListSectionAdapter extends ListAdapter {
 
 	/**
 	 * Class implementing holder pattern, performance boost
-	 * 
+	 *
 	 * @author Lukasz Wisniewski
 	 */
 	static class ViewHolder {
+
 		TextView eventName;
 		TextView venueName;
 		TextView countryName;

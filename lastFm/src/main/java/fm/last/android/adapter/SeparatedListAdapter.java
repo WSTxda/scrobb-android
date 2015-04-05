@@ -1,6 +1,6 @@
 /***************************************************************************
  *    Copyright (c) 2008  Jeffrey Sharkey <Jeffrey.Sharkey@gmail.com>        
- *                                                                         
+ *
  *    This program is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -29,9 +29,10 @@ import java.util.Map;
 import fm.last.android.R;
 
 public class SeparatedListAdapter extends BaseAdapter {
+
+	public final static int TYPE_SECTION_HEADER = 0;
 	public final Map<String, Adapter> sections = new LinkedHashMap<String, Adapter>();
 	public ArrayAdapter<String> headers;
-	public final static int TYPE_SECTION_HEADER = 0;
 
 	public SeparatedListAdapter(Context context) {
 		headers = new ArrayAdapter<String>(context, R.layout.list_header);
@@ -42,25 +43,8 @@ public class SeparatedListAdapter extends BaseAdapter {
 		this.sections.put(section, adapter);
 	}
 
-	public Object getItem(int position) {
-		for (Object section : this.sections.keySet()) {
-			Adapter adapter = sections.get(section);
-			int size = adapter.getCount() + 1;
-
-			// check if position inside this section
-			if (position == 0)
-				return section;
-			if (position < size)
-				return adapter.getItem(position - 1);
-
-			// otherwise jump into next section
-			position -= size;
-		}
-		return null;
-	}
-
 	public void enableLoadBar(int position) {
-		for (Object section : this.sections.keySet()) {
+		for(Object section : this.sections.keySet()) {
 			Adapter adapter = sections.get(section);
 			int size = adapter.getCount() + 1;
 
@@ -72,9 +56,92 @@ public class SeparatedListAdapter extends BaseAdapter {
 	public int getCount() {
 		// total together all sections, plus one for each section header
 		int total = 0;
-		for (Adapter adapter : this.sections.values())
+		for(Adapter adapter : this.sections.values())
 			total += adapter.getCount() + 1;
 		return total;
+	}
+
+	public Object getItem(int position) {
+		for(Object section : this.sections.keySet()) {
+			Adapter adapter = sections.get(section);
+			int size = adapter.getCount() + 1;
+
+			// check if position inside this section
+			if(position == 0) {
+				return section;
+			}
+			if(position < size) {
+				return adapter.getItem(position - 1);
+			}
+
+			// otherwise jump into next section
+			position -= size;
+		}
+		return null;
+	}
+
+	public long getItemId(int position) {
+		return position;
+	}
+
+	public View getView(int position, View convertView, ViewGroup parent) {
+		int sectionnum = 0;
+		for(Object section : this.sections.keySet()) {
+			Adapter adapter = sections.get(section);
+			int size = adapter.getCount() + 1;
+
+			// check if position inside this section
+			if(position == 0) {
+				return headers.getView(sectionnum, convertView, parent);
+			}
+			if(position < size) {
+				return adapter.getView(position - 1, convertView, parent);
+			}
+
+			// otherwise jump into next section
+			position -= size;
+			sectionnum++;
+		}
+		return null;
+	}
+
+	@Override
+	public boolean areAllItemsEnabled() {
+		return false;
+	}
+
+	@Override
+	public boolean isEnabled(int position) {
+		return (getItemViewType(position) != TYPE_SECTION_HEADER);
+	}
+
+	@Override
+	public int getItemViewType(int position) {
+		int type = 1;
+		for(Object section : this.sections.keySet()) {
+			Adapter adapter = sections.get(section);
+			int size = adapter.getCount() + 1;
+
+			// check if position inside this section
+			if(position == 0) {
+				return TYPE_SECTION_HEADER;
+			}
+
+			// i've replaced sharkey's original line below because
+			// it was totally crashy (when flinging the list, and moving through
+			// with cursors) and i have no idea why!. please explain. [doug]
+
+			// if(position < size) return type +
+			// adapter.getItemViewType(position - 1);
+			if(position < size) {
+				return 1;
+			}
+
+			// otherwise jump into next section
+			position -= size;
+			type += adapter.getViewTypeCount();
+		}
+		return -1;
 	}
 
 	@Override
@@ -90,66 +157,6 @@ public class SeparatedListAdapter extends BaseAdapter {
 		// for(Adapter adapter : this.sections.values())
 		// total += adapter.getViewTypeCount();
 		// return total;
-	}
-
-	@Override
-	public int getItemViewType(int position) {
-		int type = 1;
-		for (Object section : this.sections.keySet()) {
-			Adapter adapter = sections.get(section);
-			int size = adapter.getCount() + 1;
-
-			// check if position inside this section
-			if (position == 0)
-				return TYPE_SECTION_HEADER;
-
-			// i've replaced sharkey's original line below because
-			// it was totally crashy (when flinging the list, and moving through
-			// with cursors) and i have no idea why!. please explain. [doug]
-
-			// if(position < size) return type +
-			// adapter.getItemViewType(position - 1);
-			if (position < size)
-				return 1;
-
-			// otherwise jump into next section
-			position -= size;
-			type += adapter.getViewTypeCount();
-		}
-		return -1;
-	}
-
-	@Override
-	public boolean areAllItemsEnabled() {
-		return false;
-	}
-
-	@Override
-	public boolean isEnabled(int position) {
-		return (getItemViewType(position) != TYPE_SECTION_HEADER);
-	}
-
-	public View getView(int position, View convertView, ViewGroup parent) {
-		int sectionnum = 0;
-		for (Object section : this.sections.keySet()) {
-			Adapter adapter = sections.get(section);
-			int size = adapter.getCount() + 1;
-
-			// check if position inside this section
-			if (position == 0)
-				return headers.getView(sectionnum, convertView, parent);
-			if (position < size)
-				return adapter.getView(position - 1, convertView, parent);
-
-			// otherwise jump into next section
-			position -= size;
-			sectionnum++;
-		}
-		return null;
-	}
-
-	public long getItemId(int position) {
-		return position;
 	}
 
 }

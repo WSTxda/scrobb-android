@@ -20,20 +20,21 @@
  ***************************************************************************/
 package fm.last.android.adapter;
 
+import android.app.Activity;
+import android.widget.ArrayAdapter;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
-import android.app.Activity;
-import android.widget.ArrayAdapter;
 import fm.last.android.R;
 import fm.last.api.Event;
 
 /**
  * ListView adapter for Events
- * 
+ *
  * @author Lukasz Wisniewski
  */
 public class EventListAdapter extends SeparatedListAdapter {
@@ -50,7 +51,7 @@ public class EventListAdapter extends SeparatedListAdapter {
 
 	/**
 	 * Sets data source for the adapter.
-	 * 
+	 *
 	 * @param events
 	 */
 	public void setEventsSource(Event[] events) {
@@ -59,13 +60,13 @@ public class EventListAdapter extends SeparatedListAdapter {
 		Map<Date, ArrayList<Event>> eventMap = new TreeMap<Date, ArrayList<Event>>();
 
 		// sorting events by date
-		for (Event event : events) {
+		for(Event event : events) {
 
 			Date date = event.getStartDate();
 
 			ArrayList<Event> subEvents;
 
-			if (eventMap.containsKey(date)) {
+			if(eventMap.containsKey(date)) {
 				subEvents = eventMap.get(date);
 			} else {
 				subEvents = new ArrayList<Event>();
@@ -75,7 +76,7 @@ public class EventListAdapter extends SeparatedListAdapter {
 		}
 
 		// adding events to appropriate sections
-		for (Map.Entry<Date, ArrayList<Event>> entry : eventMap.entrySet()) {
+		for(Map.Entry<Date, ArrayList<Event>> entry : eventMap.entrySet()) {
 			EventListSectionAdapter eventItemAdapter = new EventListSectionAdapter(mContext);
 			eventItemAdapter.setEventsSource(entry.getValue());
 			String dateString = mDateFormat.format(entry.getKey());
