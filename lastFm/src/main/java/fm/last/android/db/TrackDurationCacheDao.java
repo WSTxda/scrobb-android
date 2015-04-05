@@ -1,9 +1,10 @@
 package fm.last.android.db;
 
-import java.util.List;
-
 import android.content.ContentValues;
 import android.database.Cursor;
+
+import java.util.List;
+
 import fm.last.api.Artist;
 import fm.last.api.Track;
 
@@ -54,7 +55,7 @@ public class TrackDurationCacheDao extends AbstractDao<Track>
 	 */
 	public synchronized long getDurationForTrack(String artist, String track) 
 	{
-		List<Track> tracks = loadWithQualification("WHERE Artist=\""+artist.replace("\"", "\\\"")+"\" AND Title=\""+track.replace("\"", "\\\"")+"\"");
+		List<Track> tracks = loadWithQualification("WHERE Artist='"+artist.replace("'", "''")+"' AND Title='"+track.replace("'", "''")+"'");
 		if (tracks!=null && tracks.size()>0) {
 			return Long.parseLong(tracks.get(0).getDuration());
 		}
