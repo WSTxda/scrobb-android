@@ -24,7 +24,6 @@ import android.app.AlertDialog;
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -162,13 +161,11 @@ public class LastFMApplication extends Application {
 
 	public void presentError(Context ctx, String title, String description) {
 		AlertDialog.Builder d = new AlertDialog.Builder(ctx);
+
 		d.setTitle(title);
 		d.setMessage(description);
-		d.setIcon(android.R.drawable.ic_dialog_alert);
-		d.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-			}
-		});
+		d.setNeutralButton(R.string.common_ok, null);
+
 		try {
 			d.show();
 		} catch(Exception ignored) {

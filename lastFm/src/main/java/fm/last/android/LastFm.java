@@ -309,7 +309,7 @@ public class LastFm extends Activity {
 			} else if(wse != null || (e != null && e.getMessage() != null)) {
 				AlertDialog.Builder d = new AlertDialog.Builder(LastFm.this);
 
-				d.setNeutralButton(getString(R.string.common_ok), null);
+				d.setNeutralButton(R.string.common_ok, null);
 
 				if((wse != null && wse.getCode() == WSError.ERROR_AuthenticationFailed) ||
 						(e != null && e.getMessage().contains("code 403"))) {
@@ -328,7 +328,6 @@ public class LastFm extends Activity {
 					d.setTitle(getResources().getString(R.string.ERROR_SERVER_UNAVAILABLE_TITLE));
 					d.setMessage(getResources().getString(R.string.ERROR_SERVER_UNAVAILABLE));
 				}
-
 				d.show();
 			}
 
