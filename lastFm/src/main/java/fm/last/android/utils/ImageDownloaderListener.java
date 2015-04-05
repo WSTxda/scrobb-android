@@ -27,5 +27,5 @@ package fm.last.android.utils;
  */
 public interface ImageDownloaderListener {
 
-	public void imageDownloaded(String URL);
+	void imageDownloaded(String URL);
 }

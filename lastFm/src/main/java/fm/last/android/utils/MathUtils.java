@@ -50,7 +50,6 @@ public class MathUtils {
 
 		double c = 2 * Math.asin(1 < Math.sqrt(a) ? 1 : Math.sqrt(a));
 
-		double d = 6367 * c;
-		return d;
+		return 6367 * c;
 	}
 }

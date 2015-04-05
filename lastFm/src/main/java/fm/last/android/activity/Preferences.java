@@ -111,11 +111,13 @@ public class Preferences extends PreferenceActivity {
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		addPreferencesFromResource(R.xml.preferences_scrobbler);
-		if(Integer.decode(Build.VERSION.SDK) >= 6) {
+
+		if(Build.VERSION.SDK_INT >= 6) {
 			addPreferencesFromResource(R.xml.preferences_sync);
 			findPreference("sync_icons").setOnPreferenceChangeListener(syncToggle);
 			findPreference("sync_names").setOnPreferenceChangeListener(syncToggle);
 		}
+
 		addPreferencesFromResource(R.xml.preferences_about);
 		findPreference("scrobble").setOnPreferenceChangeListener(scrobbletoggle);
 		findPreference("scrobble_music_player").setOnPreferenceChangeListener(scrobbletoggle);

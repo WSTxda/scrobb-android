@@ -34,7 +34,7 @@ import android.widget.ViewSwitcher;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.concurrent.RejectedExecutionException;
 
 import fm.last.android.R;
 import fm.last.android.utils.ImageCache;
@@ -83,9 +83,10 @@ public class ListAdapter extends BaseAdapter implements Serializable, ImageDownl
 	 */
 	public ListAdapter(Activity context, String[] data) {
 		mContext = context;
-		mList = new ArrayList<ListEntry>();
-		for(int i = 0; i < data.length; i++) {
-			ListEntry entry = new ListEntry(data[i], -1, data[i], R.drawable.list_icon_arrow);
+		mList = new ArrayList<>();
+
+		for(String aData : data) {
+			ListEntry entry = new ListEntry(aData, -1, aData, R.drawable.list_icon_arrow);
 			mList.add(entry);
 		}
 	}
@@ -110,7 +111,7 @@ public class ListAdapter extends BaseAdapter implements Serializable, ImageDownl
 	 */
 	private void init(ImageCache imageCache) {
 		setImageCache(imageCache);
-		mList = new ArrayList<ListEntry>();
+		mList = new ArrayList<>();
 	}
 
 	@Override
@@ -125,18 +126,18 @@ public class ListAdapter extends BaseAdapter implements Serializable, ImageDownl
 	 */
 	public void setSourceIconified(ArrayList<ListEntry> list) {
 		mList = list;
+
 		if(list == null) {
 			return;
 		}
-		Iterator<ListEntry> it = list.iterator();
-		while(it.hasNext()) {
-			ListEntry entry = it.next();
+
+		for(ListEntry entry : list) {
 			if(entry.url != null) {
 				try {
 					if(mImageDownloader.getAsyncTaskEx(entry.url) == null) {
 						mImageDownloader.getImage(entry.url);
 					}
-				} catch(java.util.concurrent.RejectedExecutionException e) {
+				} catch(RejectedExecutionException e) {
 					e.printStackTrace();
 				}
 			}

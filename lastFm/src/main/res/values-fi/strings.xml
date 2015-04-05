@@ -140,7 +140,7 @@
 	<string name="profile_notags">Ei tunnisteita</string>
 	<string name="profile_selectaction">Valitse toiminto</string>
 	<string name="profile_userplays">%1$d toistoa vuodesta %2$te %2$tb %2$tY</string>
-	<string name="profile_loading">Ladataan profiilia...</string>
+	<string name="profile_loading">Ladataan profiilia…</string>
 	<string name="profile_gender_male">mies</string>
 	<string name="profile_gender_female">nainen</string>
 	<string name="profile_search">Etsi</string>
@@ -165,7 +165,7 @@
 	<string name="metadata_listeners">kuuntelijaa</string>
 	<string name="metadata_userplays">toistoa kirjastostasi</string>
 	<string name="newstation_search">Etsi</string>
-	<string name="newstation_searching">Etsitään...</string>
+	<string name="newstation_searching">Etsitään…</string>
 	<string name="newstation_noresults">Tuloksia ei löytynyt</string>
 	<string name="newstation_artistradio">%1$s Radio</string>
 	<string name="newstation_tagradio">%1$s Tunnisteradio</string>
@@ -196,7 +196,7 @@
   <string name="durationformat">
 		<xliff:g id="format">%2$d:%5$02d</xliff:g>
 	</string>
-	<string name="common_loading">Ladataan...</string>
+	<string name="common_loading">Ladataan…</string>
 	<string name="common_cancel">Peruuta</string>
 	<string name="common_ok">OK</string>
 	<string name="common_save">Tallenna</string>

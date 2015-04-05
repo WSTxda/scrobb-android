@@ -154,7 +154,7 @@
 	<string name="profile_notags">No Tags</string>
 	<string name="profile_selectaction">Select Action</string>
 	<string name="profile_userplays">%1$d plays since %2$te %2$tb %2$tY</string>
-	<string name="profile_loading">Loading Profile...</string>
+	<string name="profile_loading">Loading Profile…</string>
 	<string name="profile_gender_male">male</string>
 	<string name="profile_gender_female">female</string>
 	<string name="profile_search">Search</string>
@@ -185,7 +185,7 @@
 
 	<!-- NewStation activity -->
 	<string name="newstation_search">Search</string>
-	<string name="newstation_searching">Searching...</string>
+	<string name="newstation_searching">Searching…</string>
 	<string name="newstation_noresults">No results found</string>
 	<string name="newstation_artistradio">%1$s Radio</string>
 	<string name="newstation_tagradio">%1$s Tag Radio</string>
@@ -228,7 +228,7 @@
 	</string>
 
 	<!-- some strings common to different activities -->
-	<string name="common_loading">Loading...</string>
+	<string name="common_loading">Loading…</string>
 	<string name="common_cancel">Cancel</string>
 	<string name="common_ok">OK</string>
 	<string name="common_save">Save</string>

@@ -12,7 +12,8 @@
 		android:layout_height="wrap_content"
 		android:hint="@string/signup_username"
 		android:maxLines="1"
-		android:singleLine="true" />
+		android:singleLine="true"
+		android:inputType="textNoSuggestions" />
 
 	<EditText
 		android:id="@+id/password"
@@ -20,8 +21,8 @@
 		android:layout_height="wrap_content"
 		android:hint="@string/signup_password"
 		android:maxLines="1"
-		android:password="true"
-		android:singleLine="true" />
+		android:singleLine="true"
+		android:inputType="textPassword" />
 
 	<EditText
 		android:id="@+id/email"
@@ -29,7 +30,8 @@
 		android:layout_height="wrap_content"
 		android:hint="@string/signup_email"
 		android:maxLines="1"
-		android:singleLine="true" />
+		android:singleLine="true"
+		android:inputType="textEmailAddress" />
 
 	<Button
 		android:id="@+id/create_account_button"

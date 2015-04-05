@@ -34,9 +34,7 @@ public class AndroidMusicIntentReceiver extends MusicIntentReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if(!PreferenceManager.getDefaultSharedPreferences(LastFMApplication.getInstance()).getBoolean("scrobble_music_player", true)) {
-			return;
-		} else {
+		if(PreferenceManager.getDefaultSharedPreferences(LastFMApplication.getInstance()).getBoolean("scrobble_music_player", true)) {
 			super.onReceive(context, intent);
 		}
 	}

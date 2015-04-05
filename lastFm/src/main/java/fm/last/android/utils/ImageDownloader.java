@@ -58,7 +58,7 @@ public class ImageDownloader {
 		}
 		this.mImageCache = imageCache;
 
-		mTasks = new Hashtable<String, AsyncTaskEx<String, Integer, Object>>();
+		mTasks = new Hashtable<>();
 	}
 
 	public void setListener(ImageDownloaderListener l) {
@@ -97,16 +97,14 @@ public class ImageDownloader {
 							} catch(NullPointerException e) {
 								Log.e(TAG, "Failed to cache " + url);
 							}
-						} catch(OutOfMemoryError e) {
-							Log.w(TAG, "Couldn't load bitmap from url: " + url, e);
-						} catch(Exception e) {
+						} catch(OutOfMemoryError | Exception e) {
 							Log.w(TAG, "Couldn't load bitmap from url: " + url, e);
 						} finally {
 							try {
 								if(stream != null) {
 									stream.close();
 								}
-							} catch(IOException e) {
+							} catch(IOException ignored) {
 							}
 						}
 					} catch(MalformedURLException e) {

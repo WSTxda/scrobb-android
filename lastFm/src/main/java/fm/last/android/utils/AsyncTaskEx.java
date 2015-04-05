@@ -135,7 +135,7 @@ public abstract class AsyncTaskEx<Params, Progress, Result> {
 	private static final int KEEP_ALIVE = 10;
 
 	private static final LinkedBlockingQueue<Runnable> sWorkQueue =
-			new LinkedBlockingQueue<Runnable>();
+			new LinkedBlockingQueue<>();
 
 	private static final ThreadFactory sThreadFactory = new ThreadFactory() {
 		private final AtomicInteger mCount = new AtomicInteger(1);
@@ -186,7 +186,7 @@ public abstract class AsyncTaskEx<Params, Progress, Result> {
 							e.getCause());
 				} catch(CancellationException e) {
 					message = sHandler.obtainMessage(MESSAGE_POST_CANCEL,
-							new AsyncTaskExResult<Result>(AsyncTaskEx.this, (Result[]) null));
+							new AsyncTaskExResult<>(AsyncTaskEx.this, (Result[]) null));
 					message.sendToTarget();
 					return;
 				} catch(Throwable t) {
@@ -195,7 +195,7 @@ public abstract class AsyncTaskEx<Params, Progress, Result> {
 				}
 
 				message = sHandler.obtainMessage(MESSAGE_POST_RESULT,
-						new AsyncTaskExResult<Result>(AsyncTaskEx.this, result));
+						new AsyncTaskExResult<>(AsyncTaskEx.this, result));
 				message.sendToTarget();
 			}
 		};
@@ -396,7 +396,7 @@ public abstract class AsyncTaskEx<Params, Progress, Result> {
 	 */
 	protected final void publishProgress(Progress... values) {
 		sHandler.obtainMessage(MESSAGE_POST_PROGRESS,
-				new AsyncTaskExResult<Progress>(this, values)).sendToTarget();
+				new AsyncTaskExResult<>(this, values)).sendToTarget();
 	}
 
 	private void finish(Result result) {

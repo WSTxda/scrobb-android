@@ -142,7 +142,7 @@
 	<string name="profile_notags">Keine Tags</string>
 	<string name="profile_selectaction">Aktion wählen</string>
 	<string name="profile_userplays">%1$d gespielte Titel seit %2$te. %2$tb %2$tY</string>
-	<string name="profile_loading">Lade Profil...</string>
+	<string name="profile_loading">Lade Profil…</string>
 	<string name="profile_gender_male">männl.</string>
 	<string name="profile_gender_female">weibl.</string>
 	<string name="profile_search">Suche</string>
@@ -185,7 +185,7 @@
 	<string name="newstation_hint_tag">Gib einen Tag an,\n um Musik zu hören.</string>
 	<string name="newstation_edithint_user">z.B. Last.hq</string>
 	<string name="newstation_hint_user">Gib einen Benutzernamen an,\n um Musik zu hören.</string>
-	<string name="newstation_searching">Suche...</string>
+	<string name="newstation_searching">Suche…</string>
 	<string name="newstation_noartist">Keine Künstler gefunden</string>
 	<string name="newstation_nousers">Keine Benutzer gefunden</string>
 	<string name="newstation_notags">Keine Tags gefunden</string>
@@ -224,7 +224,7 @@
 	</string>
 
 	<!-- some strings common to different activities -->
-	<string name="common_loading">Lade...</string>
+	<string name="common_loading">Lade…</string>
 	<string name="common_cancel">Abbrechen</string>
 	<string name="common_ok">OK</string>
 	<string name="common_save">Speichern</string>

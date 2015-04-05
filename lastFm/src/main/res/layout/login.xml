@@ -11,7 +11,8 @@
 		android:layout_width="200dip"
 		android:layout_height="wrap_content"
 		android:hint="@string/main_username"
-		android:singleLine="true" />
+		android:singleLine="true"
+		android:inputType="textNoSuggestions" />
 
 	<EditText
 		android:id="@+id/password"
@@ -20,8 +21,8 @@
 		android:hint="@string/main_password"
 		android:imeOptions="actionDone"
 		android:maxLines="1"
-		android:password="true"
-		android:singleLine="true" />
+		android:singleLine="true"
+		android:inputType="textPassword" />
 
 	<Button
 		android:id="@+id/sign_in_button"
@@ -37,7 +38,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="54dip"
-		android:text="@string/main_newaccount"></TextView>
+		android:text="@string/main_newaccount" />
 
 	<Button
 		android:id="@+id/sign_up_button"

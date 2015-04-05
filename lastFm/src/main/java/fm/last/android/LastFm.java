@@ -52,12 +52,13 @@ import fm.last.api.WSError;
 public class LastFm extends Activity {
 
 	public static final String PREFS = "LoginPrefs";
-	String authInfo;
+
 	private boolean mLoginShown;
 	private EditText mPassField;
 	private EditText mUserField;
 	private Button mLoginButton;
 	private Button mSignupButton;
+
 	/** Specifies if the user has just signed up */
 	private boolean mNewUser = false;
 	private LoginTask mLoginTask;
@@ -72,7 +73,7 @@ public class LastFm extends Activity {
 		String session_key = settings.getString("lastfm_session_key", "");
 		String pass;
 
-		if(Integer.decode(Build.VERSION.SDK) >= 6) {
+		if(Build.VERSION.SDK_INT >= 6) {
 			if(!AccountAuthenticatorService.hasLastfmAccount(this)) {
 				session_key = "";
 				LastFMApplication.getInstance().logout();
@@ -81,17 +82,19 @@ public class LastFm extends Activity {
 
 		if(!user.equals("") && !session_key.equals("")) {
 			if(getIntent().getAction() != null && getIntent().getAction().equals(Intent.ACTION_SEARCH)) {
-				String query = "";
+				String query;
 
 				if(getIntent().getStringExtra(SearchManager.QUERY) != null) {
 					query = getIntent().getStringExtra(SearchManager.QUERY);
 				} else {
 					query = getIntent().getData().toString();
 				}
+
 				Log.i("LastFm", "Query: " + query);
 			} else if(getIntent().getAction() != null && getIntent().getAction().equals("fm.last.android.sync.LOGIN")) {
 				Intent intent = getIntent();
 				Bundle extras = intent.getExtras();
+
 				if(extras != null) {
 					try {
 						AccountAuthenticatorService.addAccount(this, user, session_key, extras.getParcelable("accountAuthenticatorResponse"));
@@ -109,12 +112,15 @@ public class LastFm extends Activity {
 			finish();
 			return;
 		}
+
 		setContentView(R.layout.login);
 		mPassField = (EditText) findViewById(R.id.password);
 		mUserField = (EditText) findViewById(R.id.username);
+
 		if(!user.equals("")) {
 			mUserField.setText(user);
 		}
+
 		mLoginButton = (Button) findViewById(R.id.sign_in_button);
 		mSignupButton = (Button) findViewById(R.id.sign_up_button);
 		mUserField.setNextFocusDownId(R.id.password);
@@ -242,18 +248,24 @@ public class LastFm extends Activity {
 			String md5Password = MD5.getInstance().hash(pass);
 			String authToken = MD5.getInstance().hash(user + md5Password);
 			Session session = server.getMobileSession(user, authToken);
+
 			if(session == null) {
 				throw (new WSError("auth.getMobileSession", "auth failure", WSError.ERROR_AuthenticationFailed));
 			}
+
 			server = AndroidLastFmServerFactory.getServer();
 			userSession = server.getSessionInfo(session.getKey());
-			if(Integer.decode(Build.VERSION.SDK) >= 6) {
+
+			if(Build.VERSION.SDK_INT >= 6) {
 				Parcelable authResponse = null;
+
 				if(getIntent() != null && getIntent().getExtras() != null) {
 					authResponse = getIntent().getExtras().getParcelable("accountAuthenticatorResponse");
 				}
+
 				AccountAuthenticatorService.addAccount(LastFm.this, user, pass, authResponse);
 			}
+
 			return session;
 		}
 
@@ -278,7 +290,8 @@ public class LastFm extends Activity {
 					editor.putInt("lastfm_playsleft", userSession.getPlaysLeft());
 					editor.putInt("lastfm_playselapsed", userSession.getPlaysElapsed());
 				}
-				editor.commit();
+
+				editor.apply();
 
 				LastFMApplication.getInstance().session = session;
 

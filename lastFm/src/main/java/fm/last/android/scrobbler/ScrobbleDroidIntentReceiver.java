@@ -34,9 +34,7 @@ public class ScrobbleDroidIntentReceiver extends MusicIntentReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if(!PreferenceManager.getDefaultSharedPreferences(LastFMApplication.getInstance()).getBoolean("scrobble_sdroid", true)) {
-			return;
-		} else {
+		if(PreferenceManager.getDefaultSharedPreferences(LastFMApplication.getInstance()).getBoolean("scrobble_sdroid", true)) {
 			super.onReceive(context, intent);
 		}
 	}

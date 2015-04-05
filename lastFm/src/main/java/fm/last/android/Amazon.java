@@ -35,13 +35,15 @@ public class Amazon {
 
 	public static int getAmazonVersion(Context ctx) {
 		PackageManager pm = ctx.getPackageManager();
-		int result = -1;
+		int result;
+
 		try {
 			PackageInfo pi = pm.getPackageInfo("com.amazon.mp3", PackageManager.GET_ACTIVITIES);
 			result = pi.versionCode;
 		} catch(Exception e) {
 			result = -1;
 		}
+
 		return result;
 	}
 

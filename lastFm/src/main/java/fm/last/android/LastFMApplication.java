@@ -27,7 +27,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
@@ -93,12 +92,6 @@ public class LastFMApplication extends Application {
 		session = new Session(username, session_key, subscriber);
 		tracker = GoogleAnalyticsTracker.getInstance();
 		tracker.start(PrivateAPIKey.ANALYTICS_ID, this);
-
-		version = "0.1";
-		try {
-			version = getPackageManager().getPackageInfo("fm.last.android", 0).versionName;
-		} catch(NameNotFoundException e) {
-		}
 	}
 
 	@Override
@@ -185,6 +178,7 @@ public class LastFMApplication extends Application {
 	public void logout() {
 		SharedPreferences settings = getSharedPreferences(LastFm.PREFS, 0);
 		SharedPreferences.Editor editor = settings.edit();
+
 		editor.remove("lastfm_user");
 		editor.remove("lastfm_pass");
 		editor.remove("lastfm_session_key");
@@ -203,11 +197,15 @@ public class LastFMApplication extends Application {
 		editor.remove("do_full_sync");
 		editor.remove("cal_sync_schema");
 		editor.remove("cal_do_full_sync");
-		editor.commit();
+
+		editor.apply();
+
 		session = null;
+
 		try {
 			LastFmDbHelper.getInstance().clearDatabase();
-			if(Integer.decode(Build.VERSION.SDK) >= 6) {
+
+			if(Build.VERSION.SDK_INT >= 6) {
 				AccountAuthenticatorService.removeLastfmAccount(this);
 			}
 		} catch(Exception e) {

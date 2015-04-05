@@ -41,6 +41,7 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
 import java.io.FileInputStream;
@@ -117,7 +118,7 @@ public class ScrobblerService extends Service {
 			PackageManager pm = ctx.getPackageManager();
 			pm.getPackageInfo("com.htc.music", 0);
 			return true;
-		} catch(Exception e) {
+		} catch(Exception ignored) {
 		}
 		return false;
 	}
@@ -127,7 +128,7 @@ public class ScrobblerService extends Service {
 			PackageManager pm = ctx.getPackageManager();
 			pm.getPackageInfo("com.google.android.music", 0);
 			return "com.google.android.music";
-		} catch(Exception e) {
+		} catch(Exception ignored) {
 		}
 		return "com.android.music";
 	}
@@ -138,18 +139,20 @@ public class ScrobblerService extends Service {
 		try {
 			Field f = Build.class.getField("MANUFACTURER");
 			manufacturer = (String) f.get(null);
-		} catch(Exception e) {
+		} catch(Exception ignored) {
 		}
 
 		if(Integer.decode(Build.VERSION.SDK) > 8 || manufacturer.toUpperCase().startsWith("LG")) {
 			return false;
 		}
+
 		try {
 			PackageManager pm = ctx.getPackageManager();
 			PackageInfo pi = pm.getPackageInfo(getAndroidMusicPackageName(ctx), 0);
 			return pi.versionCode < 300;
-		} catch(Exception e) {
+		} catch(Exception ignored) {
 		}
+
 		return false;
 	}
 
@@ -196,10 +199,13 @@ public class ScrobblerService extends Service {
 				FileInputStream fileStream = openFileInput("queue.dat");
 				ObjectInputStream objectStream = new ObjectInputStream(fileStream);
 				Object obj = objectStream.readObject();
+
 				if(obj instanceof Integer) {
 					Integer count = (Integer) obj;
-					for(int i = 0; i < count.intValue(); i++) {
+
+					for(int i = 0; i < count; i++) {
 						obj = objectStream.readObject();
+
 						if(obj != null && obj instanceof ScrobblerQueueEntry) {
 							try {
 								ScrobblerQueueDao.getInstance().addToQueue((ScrobblerQueueEntry) obj);
@@ -208,24 +214,27 @@ public class ScrobblerService extends Service {
 							}
 						}
 					}
+
 					logger.info("Imported " + count + " tracks");
 				}
+
 				objectStream.close();
 				fileStream.close();
 				deleteFile("queue.dat");
 			}
+
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public void onStart(Intent intent, int startId) {
+	public int onStartCommand(Intent intent, int flags, int startId) {
 		final Intent i = intent;
 
 		if(i == null) {
 			stopSelf();
-			return;
+			return START_NOT_STICKY;
 		}
 		
 		/*
@@ -245,6 +254,7 @@ public class ScrobblerService extends Service {
 			if(id == -1) {
 				id = intent.getIntExtra("id", -1);
 			}
+
 			if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("scrobble_music_player", true) && id != -1) {
 				if(isAndroidMusicInstalled(this)) {
 					try {
@@ -270,7 +280,7 @@ public class ScrobblerService extends Service {
 								}
 								try {
 									LastFMApplication.getInstance().unbindService(this);
-								} catch(IllegalArgumentException e) {
+								} catch(IllegalArgumentException ignored) {
 								}
 							}
 
@@ -318,13 +328,15 @@ public class ScrobblerService extends Service {
 						}
 						try {
 							LastFMApplication.getInstance().unbindService(this);
-						} catch(IllegalArgumentException e) {
+						} catch(IllegalArgumentException ignored) {
 						}
 					}
 
 					public void onServiceDisconnected(ComponentName comp) {
 					}
+
 				}, 0);
+
 			} else {
 				// Clear the current track in case the user has disabled
 				// scrobbling of the media player
@@ -332,8 +344,10 @@ public class ScrobblerService extends Service {
 				mCurrentTrack = null;
 				stopIfReady();
 			}
+
 		} else if(intent.getAction().equals("com.adam.aslfms.notify.playstatechanged")) {
 			int state = intent.getIntExtra("state", -1);
+
 			if(state > -1) {
 				if(state < 2) { //start or resume
 					i.setAction(META_CHANGED);
@@ -348,16 +362,13 @@ public class ScrobblerService extends Service {
 				}
 				handleIntent(i);
 			}
+
 		} else if(intent.getAction().equals("net.jjc1138.android.scrobbler.action.MUSIC_STATUS")) {
 			new IntentFromMediaDBTask(i).execute((Void) null);
 		} else { //
 			handleIntent(i);
 		}
-	}
 
-	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		onStart(intent, startId);
 		return START_NOT_STICKY;
 	}
 
@@ -365,7 +376,8 @@ public class ScrobblerService extends Service {
 	public void onDestroy() {
 		super.onDestroy();
 
-		int queueSize = 0;
+		int queueSize;
+
 		try {
 			queueSize = ScrobblerQueueDao.getInstance().getQueueSize();
 		} catch(Exception e) { //If the db was locked, assume we should try again in an hour
@@ -438,12 +450,20 @@ public class ScrobblerService extends Service {
 			return cur.getLong(cur.getColumnIndex(MediaStore.Audio.AudioColumns.DURATION));
 		}
 
+		if(cur != null) {
+			cur.close();
+		}
+
 		//Search the artist/title on internal storage
 		cur = getContentResolver().query(MediaStore.Audio.Media.INTERNAL_CONTENT_URI, columns,
 				MediaStore.Audio.AudioColumns.ARTIST + " = ? and " + MediaStore.Audio.AudioColumns.TITLE + " = ?", new String[]{artist, track}, null);
 
 		if(cur != null && cur.moveToFirst()) {
 			return cur.getLong(cur.getColumnIndex(MediaStore.Audio.AudioColumns.DURATION));
+		}
+
+		if(cur != null) {
+			cur.close();
 		}
 
 		//Check to see if we've cached it from a previous network lookup
@@ -458,6 +478,7 @@ public class ScrobblerService extends Service {
 		NetworkInfo ni = cm.getActiveNetworkInfo();
 		if(ni != null) {
 			boolean scrobbleWifiOnly = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("scrobble_wifi_only", false);
+
 			if(cm.getBackgroundDataSetting() && ni.isConnected() && (!scrobbleWifiOnly || (scrobbleWifiOnly && ni.getType() == ConnectivityManager.TYPE_WIFI))) {
 				LastFmServer server = AndroidLastFmServerFactory.getServer();
 				try {
@@ -465,8 +486,7 @@ public class ScrobblerService extends Service {
 					TrackDurationCacheDao.getInstance().save(Collections.singleton(t));
 					logger.info("Duration from network: " + t.getDuration());
 					return Long.parseLong(t.getDuration());
-				} catch(Exception e) {
-				} catch(WSError e) {
+				} catch(Exception | WSError ignored) {
 				}
 			}
 		}
@@ -474,8 +494,6 @@ public class ScrobblerService extends Service {
 	}
 
 	public Intent intentFromMediaDB(Intent intent) {
-		final Intent i = intent;
-
 		boolean playing = false;
 
 		SharedPreferences settings = getSharedPreferences(LastFm.PREFS, 0);
@@ -491,26 +509,26 @@ public class ScrobblerService extends Service {
 
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putBoolean("mediaPlayerIsPlaying", playing);
-		editor.commit();
+		editor.apply();
 
 		if(!playing) {
-			i.setAction(PLAYBACK_FINISHED);
+			intent.setAction(PLAYBACK_FINISHED);
 		} else {
-			i.setAction(META_CHANGED);
+			intent.setAction(META_CHANGED);
 
 			//convert the duration from int to long
 			long duration = intent.getIntExtra("secs", 0);
-			i.removeExtra("secs");
-			i.putExtra("duration", duration * 1000);
+			intent.removeExtra("secs");
+			intent.putExtra("duration", duration * 1000);
 
 			//Try to find the duration in the media db, otherwise get it from last.fm
-			if(i.getStringExtra("artist") != null && i.getStringExtra("track") != null) {
-				duration = i.getLongExtra("duration", 0);
+			if(intent.getStringExtra("artist") != null && intent.getStringExtra("track") != null) {
+				duration = intent.getLongExtra("duration", 0);
 				if(duration == 0) {
-					duration = lookupDuration(i.getStringExtra("artist"), i.getStringExtra("track"));
-					i.putExtra("duration", duration);
+					duration = lookupDuration(intent.getStringExtra("artist"), intent.getStringExtra("track"));
+					intent.putExtra("duration", duration);
 				}
-				return i;
+				return intent;
 			}
 
 			//If there was no artist / track in the intent, try to look up the id in the media db
@@ -556,23 +574,23 @@ public class ScrobblerService extends Service {
 						return null;
 					} else {
 						String artist = cur.getString(cur.getColumnIndex(MediaStore.Audio.AudioColumns.ARTIST));
-						if(i.getStringExtra("artist") == null) {
-							i.putExtra("artist", artist);
+						if(intent.getStringExtra("artist") == null) {
+							intent.putExtra("artist", artist);
 						}
 
 						String track = cur.getString(cur.getColumnIndex(MediaStore.Audio.AudioColumns.TITLE));
-						if(i.getStringExtra("track") == null) {
-							i.putExtra("track", track);
+						if(intent.getStringExtra("track") == null) {
+							intent.putExtra("track", track);
 						}
 
 						String album = cur.getString(cur.getColumnIndex(MediaStore.Audio.AudioColumns.ALBUM));
-						if(i.getStringExtra("album") == null) {
-							i.putExtra("album", album);
+						if(intent.getStringExtra("album") == null) {
+							intent.putExtra("album", album);
 						}
 
 						duration = cur.getLong(cur.getColumnIndex(MediaStore.Audio.AudioColumns.DURATION));
 						if(duration != 0) {
-							i.putExtra("duration", duration);
+							intent.putExtra("duration", duration);
 						}
 					}
 				} finally {
@@ -580,7 +598,7 @@ public class ScrobblerService extends Service {
 				}
 			}
 		}
-		return i;
+		return intent;
 	}
 
 	public void handleIntent(Intent intent) {
@@ -660,10 +678,15 @@ public class ScrobblerService extends Service {
 				NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 				nm.cancel(1338);
 
-				Notification notification = new Notification(R.drawable.as_statusbar, null, System.currentTimeMillis());
 				String info = mCurrentTrack.title + " - " + mCurrentTrack.artist;
-				notification.setLatestEventInfo(this, getString(R.string.scrobbler_info_title), info, null);
-				notification.flags |= Notification.FLAG_ONGOING_EVENT;
+
+				Notification notification = (new NotificationCompat.Builder(this))
+						.setSmallIcon(R.drawable.as_statusbar)
+						.setContentTitle(getString(R.string.scrobbler_info_title))
+						.setContentText(info)
+						.setOngoing(true)
+						.build();
+
 				try {
 					Field f = Notification.class.getField("priority");
 					f.setInt(notification, -2); //PRIORITY_MIN
@@ -704,8 +727,10 @@ public class ScrobblerService extends Service {
 		if(intent.getAction().equals("fm.last.android.scrobbler.FLUSH") || mNowPlayingTask == null) {
 			ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 			NetworkInfo ni = cm.getActiveNetworkInfo();
+
 			if(ni != null) {
 				boolean scrobbleWifiOnly = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("scrobble_wifi_only", false);
+
 				if(cm.getBackgroundDataSetting() && ni.isConnected() && (!scrobbleWifiOnly || (scrobbleWifiOnly && ni.getType() == ConnectivityManager.TYPE_WIFI))) {
 					int queueSize = 0;
 					try {
@@ -763,12 +788,9 @@ public class ScrobblerService extends Service {
 
 			try {
 				mScrobblerLock.lock();
-				server.removeNowPlaying(mTrack.getCreator(), mTrack.getTitle(), mTrack.getAlbum(), (long) (mTrack.getDuration() / 1000), ScrobblerService.this.player, mSession.getKey());
+				server.removeNowPlaying(mTrack.getCreator(), mTrack.getTitle(), mTrack.getAlbum(), mTrack.getDuration() / 1000, ScrobblerService.this.player, mSession.getKey());
 				success = true;
-			} catch(Exception e) {
-				e.printStackTrace();
-				success = false;
-			} catch(WSError e) {
+			} catch(Exception | WSError e) {
 				e.printStackTrace();
 				success = false;
 			} finally {
@@ -811,12 +833,9 @@ public class ScrobblerService extends Service {
 
 			try {
 				mScrobblerLock.lock();
-				server.updateNowPlaying(mTrack.getCreator(), mTrack.getTitle(), mTrack.getAlbum(), (long) (mTrack.getDuration() / 1000), ScrobblerService.this.player, mSession.getKey());
+				server.updateNowPlaying(mTrack.getCreator(), mTrack.getTitle(), mTrack.getAlbum(), mTrack.getDuration() / 1000, ScrobblerService.this.player, mSession.getKey());
 				success = true;
-			} catch(Exception e) {
-				e.printStackTrace();
-				success = false;
-			} catch(WSError e) {
+			} catch(Exception | WSError e) {
 				e.printStackTrace();
 				success = false;
 			} finally {
@@ -844,11 +863,13 @@ public class ScrobblerService extends Service {
 			logger.info("Going to submit " + ScrobblerQueueDao.getInstance().getQueueSize() + " tracks");
 			LastFmServer server = AndroidLastFmServerFactory.getServer();
 
-			ScrobblerQueueEntry e = null;
+			ScrobblerQueueEntry e;
+
 			while((e = ScrobblerQueueDao.getInstance().nextQueueEntry()) != null) {
 				try {
 					success = false;
-					if(e != null && e.title != null && e.artist != null && e.toRadioTrack() != null) {
+
+					if(e.title != null && e.artist != null && e.toRadioTrack() != null) {
 						if(e.rating.equals("L")) {
 							server.loveTrack(e.artist, e.title, mSession.getKey());
 						}

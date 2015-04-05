@@ -33,7 +33,7 @@ import fm.last.api.MD5;
  */
 public class AccountAuthenticatorService extends Service {
 
-	private static final String TAG = "AccountAuthenticatorService";
+	private static final String TAG = "AccountAuthService";
 	private static AccountAuthenticatorImpl sAccountAuthenticator = null;
 
 	public AccountAuthenticatorService() {
@@ -59,9 +59,11 @@ public class AccountAuthenticatorService extends Service {
 	public static void resyncAccount(Context context) {
 		Editor editor = PreferenceManager.getDefaultSharedPreferences(LastFMApplication.getInstance()).edit();
 		editor.putBoolean("do_full_sync", true);
-		editor.commit();
+		editor.apply();
+
 		AccountManager am = AccountManager.get(context);
 		Account[] accounts = am.getAccountsByType(context.getString(R.string.ACCOUNT_TYPE));
+
 		if(ContentResolver.getSyncAutomatically(accounts[0], ContactsContract.AUTHORITY)) {
 			//Try turning it off and on again
 			ContentResolver.setSyncAutomatically(accounts[0], ContactsContract.AUTHORITY, false);
@@ -109,11 +111,8 @@ public class AccountAuthenticatorService extends Service {
 		public static Boolean hasLastfmAccount(Context ctx) {
 			AccountManager am = AccountManager.get(ctx);
 			Account[] accounts = am.getAccountsByType(ctx.getString(R.string.ACCOUNT_TYPE));
-			if(accounts != null && accounts.length > 0) {
-				return true;
-			} else {
-				return false;
-			}
+
+			return accounts != null && accounts.length > 0;
 		}
 
 		public static void removeLastfmAccount(Context ctx) {

@@ -59,7 +59,7 @@ public abstract class AbstractDao<T> {
 		try {
 			db = dbHelper.getReadableDatabase();
 			c = db.rawQuery(query, null);
-			List<T> result = new ArrayList<T>(c.getCount());
+			List<T> result = new ArrayList<>(c.getCount());
 			if(c.getCount() > 0) {
 				c.moveToFirst();
 				// Loop through all Results

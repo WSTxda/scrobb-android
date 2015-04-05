@@ -143,10 +143,10 @@ public class ScrobblerQueueDao extends AbstractDao<ScrobblerQueueEntry> {
 
 		entry.album = c.getString(c.getColumnIndex("Album"));
 		entry.artist = c.getString(c.getColumnIndex("Artist"));
-		entry.currentTrack = c.getInt(c.getColumnIndex("CurrentTrack")) == 0 ? false : true;
+		entry.currentTrack = c.getInt(c.getColumnIndex("CurrentTrack")) != 0;
 		entry.duration = c.getLong(c.getColumnIndex("Duration"));
-		entry.loved = c.getInt(c.getColumnIndex("Loved")) == 0 ? false : true;
-		entry.postedNowPlaying = c.getInt(c.getColumnIndex("PostedNowPlaying")) == 0 ? false : true;
+		entry.loved = c.getInt(c.getColumnIndex("Loved")) != 0;
+		entry.postedNowPlaying = c.getInt(c.getColumnIndex("PostedNowPlaying")) != 0;
 		entry.rating = c.getString(c.getColumnIndex("Rating"));
 		entry.startTime = c.getLong(c.getColumnIndex("StartTime"));
 		entry.title = c.getString(c.getColumnIndex("Title"));
