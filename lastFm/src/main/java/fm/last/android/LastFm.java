@@ -22,9 +22,6 @@ package fm.last.android;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -42,9 +39,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.net.URL;
-import java.util.concurrent.RejectedExecutionException;
-
 import fm.last.android.activity.Preferences;
 import fm.last.android.activity.SignUp;
 import fm.last.android.sync.AccountAuthenticatorService;
@@ -54,7 +48,6 @@ import fm.last.api.MD5;
 import fm.last.api.Session;
 import fm.last.api.SessionInfo;
 import fm.last.api.WSError;
-import fm.last.util.UrlUtil;
 
 public class LastFm extends Activity {
 
@@ -72,18 +65,12 @@ public class LastFm extends Activity {
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle icicle) {
-
 		super.onCreate(icicle);
+
 		SharedPreferences settings = getSharedPreferences(PREFS, 0);
 		String user = settings.getString("lastfm_user", "");
 		String session_key = settings.getString("lastfm_session_key", "");
 		String pass;
-
-		try {
-			new CheckUpdatesTask().execute((Void) null);
-		} catch(RejectedExecutionException e) {
-
-		}
 
 		if(Integer.decode(Build.VERSION.SDK) >= 6) {
 			if(!AccountAuthenticatorService.hasLastfmAccount(this)) {
@@ -341,38 +328,4 @@ public class LastFm extends Activity {
 		}
 	}
 
-	private class CheckUpdatesTask extends AsyncTaskEx<Void, Void, Boolean> {
-
-		private String mUpdateURL = "";
-
-		@Override
-		public Boolean doInBackground(Void... params) {
-			boolean success = false;
-
-			try {
-				URL url = new URL("http://cdn.last.fm/client/android/" + getPackageManager().getPackageInfo("fm.last.android", 0).versionName + ".txt");
-				mUpdateURL = UrlUtil.doGet(url);
-				if(mUpdateURL.startsWith("market://") || mUpdateURL.startsWith("http://")) {
-					success = true;
-					Log.i("Last.fm", "Update URL: " + mUpdateURL);
-				}
-			} catch(Exception e) {
-				// No updates available! Yay!
-			}
-			return success;
-		}
-
-		@Override
-		public void onPostExecute(Boolean result) {
-			if(result) {
-				NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-				Notification notification = new Notification(R.drawable.as_statusbar, getString(R.string.newversion_ticker_text), System.currentTimeMillis());
-				PendingIntent contentIntent = PendingIntent.getActivity(LastFm.this, 0, new Intent(Intent.ACTION_VIEW, Uri.parse(mUpdateURL)), 0);
-				notification
-						.setLatestEventInfo(LastFm.this, getString(R.string.newversion_info_title), getString(R.string.newversion_info_text), contentIntent);
-
-				nm.notify(12345, notification);
-			}
-		}
-	}
 }
