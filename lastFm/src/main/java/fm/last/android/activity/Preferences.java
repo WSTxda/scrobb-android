@@ -9,14 +9,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 
 import fm.last.android.LastFMApplication;
 import fm.last.android.R;
-import fm.last.android.sync.AccountAuthenticatorService;
 
 /**
  * @author sam
@@ -44,6 +42,7 @@ public class Preferences extends PreferenceActivity {
 			return false;
 		}
 	};
+
 	Preference.OnPreferenceChangeListener scrobbletoggle = new Preference.OnPreferenceChangeListener() {
 		public boolean onPreferenceChange(Preference preference, Object newValue) {
 			if(preference.getKey().equals("scrobble")) {
@@ -99,37 +98,26 @@ public class Preferences extends PreferenceActivity {
 			return true;
 		}
 	};
-	private boolean shouldForceSync = false;
-	Preference.OnPreferenceChangeListener syncToggle = new Preference.OnPreferenceChangeListener() {
-		public boolean onPreferenceChange(Preference preference, Object newValue) {
-			shouldForceSync = true;
-			return true;
-		}
-	};
 
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
+
 		addPreferencesFromResource(R.xml.preferences_scrobbler);
-
-		if(Build.VERSION.SDK_INT >= 6) {
-			addPreferencesFromResource(R.xml.preferences_sync);
-			findPreference("sync_icons").setOnPreferenceChangeListener(syncToggle);
-			findPreference("sync_names").setOnPreferenceChangeListener(syncToggle);
-		}
-
 		addPreferencesFromResource(R.xml.preferences_about);
+
 		findPreference("scrobble").setOnPreferenceChangeListener(scrobbletoggle);
 		findPreference("scrobble_music_player").setOnPreferenceChangeListener(scrobbletoggle);
 		findPreference("scrobble_sdroid").setOnPreferenceChangeListener(scrobbletoggle);
 		findPreference("scrobble_sls").setOnPreferenceChangeListener(scrobbletoggle);
+
 		findPreference("tos").setOnPreferenceClickListener(urlClick);
 		findPreference("privacy").setOnPreferenceClickListener(urlClick);
 		findPreference("changes").setOnPreferenceClickListener(urlClick);
+
 		try {
 			findPreference("version").setSummary(getPackageManager().getPackageInfo("fm.last.android", 0).versionName);
 		} catch(NameNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -144,11 +132,4 @@ public class Preferences extends PreferenceActivity {
 		}
 	}
 
-	@Override
-	public void onPause() {
-		super.onPause();
-		if(shouldForceSync) {
-			AccountAuthenticatorService.resyncAccount(this);
-		}
-	}
 }
