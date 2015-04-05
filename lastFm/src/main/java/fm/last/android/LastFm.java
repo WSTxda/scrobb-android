@@ -303,6 +303,8 @@ public class LastFm extends Activity {
 					}
 				}
 
+				Intent i = new Intent(LastFm.this, Preferences.class);
+				startActivity(i);
 				finish();
 			} else if(wse != null || (e != null && e.getMessage() != null)) {
 				AlertDialog.Builder d = new AlertDialog.Builder(LastFm.this);
