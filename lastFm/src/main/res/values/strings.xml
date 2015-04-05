@@ -31,7 +31,7 @@
 	<string name="main_password">Password</string>
 	<string name="main_login">Log in</string>
 	<string name="main_signup">Sign up</string>
-	<string name="main_newaccount">&quot;Haven\'t got an account yet?&quot;</string>
+	<string name="main_newaccount">Haven\'t got an account yet?</string>
 	<string name="main_authenticating">Authenticating</string>
 	<string name="main_forgotpassword">Forgot Password</string>
 
@@ -242,8 +242,8 @@
 	<string name="ERROR_INSUFFICIENT_CONTENT_TITLE">Insufficient Content</string>
 	<string name="ERROR_INSUFFICIENT_FANS">There are not enough fans of this artist to play this station.  Please try another artist.</string>
 	<string name="ERROR_INSUFFICIENT_MEMBERS">There are not enough members in this group to play this station.  Please try another group.</string>
-	<string name="ERROR_INSUFFICIENT_NEIGHBOURS">&quot;Your musical neighborhood hasn\'t been calculated yet.  Try listening to more music and try again in a few days.&quot;</string>
-	<string name="ERROR_MISSINGINFO">&quot;You must have a valid Last.fm username and password.  If you don\'t have an account, click the Sign Up button.&quot;</string>
+	<string name="ERROR_INSUFFICIENT_NEIGHBOURS">Your musical neighborhood hasn\'t been calculated yet.  Try listening to more music and try again in a few days.</string>
+	<string name="ERROR_MISSINGINFO">You must have a valid Last.fm username and password.  If you don\'t have an account, click the Sign Up button.</string>
 	<string name="ERROR_MISSINGINFO_TITLE">Missing Information</string>
 	<string name="ERROR_NONETWORK">This feature requires a connection to the internet.  Please connect to the internet and try again.</string>
 	<string name="ERROR_NONETWORK_TITLE">No Network Connection</string>
