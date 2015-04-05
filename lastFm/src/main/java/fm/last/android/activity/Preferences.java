@@ -13,9 +13,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+
 import fm.last.android.LastFMApplication;
 import fm.last.android.R;
-import fm.last.android.player.RadioPlayerService;
 import fm.last.android.sync.AccountAuthenticatorService;
 
 /**
@@ -29,8 +29,6 @@ public class Preferences extends PreferenceActivity {
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		addPreferencesFromResource(R.xml.preferences_scrobbler);
-		if(RadioPlayerService.radioAvailable(this))
-			addPreferencesFromResource(R.xml.preferences_player);
 		if(Integer.decode(Build.VERSION.SDK) >= 6) {
 			addPreferencesFromResource(R.xml.preferences_sync);
 			findPreference("sync_icons").setOnPreferenceChangeListener(syncToggle);

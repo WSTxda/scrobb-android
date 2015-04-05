@@ -24,16 +24,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.widget.Toast;
-import fm.last.android.AndroidLastFmServerFactory;
+
 import fm.last.android.LastFMApplication;
-import fm.last.android.R;
 import fm.last.android.db.ScrobblerQueueDao;
-import fm.last.android.player.IRadioPlayer;
-import fm.last.android.player.RadioPlayerService;
-import fm.last.api.LastFmServer;
 import fm.last.api.Session;
 
 /**
@@ -55,46 +49,6 @@ public class MusicIntentReceiver extends BroadcastReceiver {
 			out.setAction(intent.getAction());
 			out.putExtras(intent);
 			context.startService(out);
-		} else if (s != null && s.getKey().length() > 0 && intent.getAction().equals("fm.last.android.LOVE")) {
-			IBinder service = peekService(context, new Intent(context, RadioPlayerService.class));
-			if (service == null) {
-				return;
-			}
-			try {
-				IRadioPlayer player = fm.last.android.player.IRadioPlayer.Stub.asInterface(service);
-				if (player != null && player.isPlaying()) {
-					String track = player.getTrackName();
-					String artist = player.getArtistName();
-					if (!track.equals(RadioPlayerService.UNKNOWN) && !artist.equals(RadioPlayerService.UNKNOWN)) {
-						LastFmServer server = AndroidLastFmServerFactory.getServer();
-						server.loveTrack(artist, track, LastFMApplication.getInstance().session.getKey());
-						Toast.makeText(context, context.getString(R.string.scrobbler_trackloved), Toast.LENGTH_SHORT).show();
-					}
-				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else if (s != null && s.getKey().length() > 0 && intent.getAction().equals("fm.last.android.BAN")) {
-			IBinder service = peekService(context, new Intent(context, RadioPlayerService.class));
-			if (service == null) {
-				return;
-			}
-			try {
-				IRadioPlayer player = fm.last.android.player.IRadioPlayer.Stub.asInterface(service);
-				if (player != null && player.isPlaying()) {
-					String track = player.getTrackName();
-					String artist = player.getArtistName();
-					if (!track.equals(RadioPlayerService.UNKNOWN) && !artist.equals(RadioPlayerService.UNKNOWN)) {
-						LastFmServer server = AndroidLastFmServerFactory.getServer();
-						server.banTrack(artist, track, LastFMApplication.getInstance().session.getKey());
-						Toast.makeText(context, context.getString(R.string.scrobbler_trackbanned), Toast.LENGTH_SHORT).show();
-					}
-				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 	}
 }

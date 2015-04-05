@@ -20,16 +20,6 @@
  ***************************************************************************/
 package fm.last.android.scrobbler;
 
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
-import java.lang.reflect.Field;
-import java.util.Collections;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
-
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -41,23 +31,35 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import fm.last.android.utils.AsyncTaskEx;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.widget.RemoteViews;
 import android.widget.Toast;
+
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
 import fm.last.android.AndroidLastFmServerFactory;
 import fm.last.android.LastFMApplication;
 import fm.last.android.LastFm;
 import fm.last.android.R;
-import fm.last.android.RadioWidgetProvider;
 import fm.last.android.db.ScrobblerQueueDao;
 import fm.last.android.db.TrackDurationCacheDao;
+import fm.last.android.utils.AsyncTaskEx;
 import fm.last.api.LastFmServer;
 import fm.last.api.RadioTrack;
 import fm.last.api.Session;
@@ -264,9 +266,9 @@ public class ScrobblerService extends Service {
 			if(id == -1)
 				id = intent.getIntExtra("id", -1);
 			if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("scrobble_music_player", true) && id != -1) {
-				if(RadioWidgetProvider.isAndroidMusicInstalled(this)) {
+				if(isAndroidMusicInstalled(this)) {
 					try {
-				       bindService(new Intent().setClassName(RadioWidgetProvider.getAndroidMusicPackageName(this), "com.android.music.MediaPlaybackService"), new ServiceConnection() {
+				       bindService(new Intent().setClassName(getAndroidMusicPackageName(this), "com.android.music.MediaPlaybackService"), new ServiceConnection() {
 				    	   public void onServiceConnected(ComponentName comp, IBinder binder) {
 				    		   com.android.music.IMediaPlaybackService s = com.android.music.IMediaPlaybackService.Stub.asInterface(binder);
 				
@@ -602,12 +604,8 @@ public class ScrobblerService extends Service {
 				nm.cancel(1338);
 
 				Notification notification = new Notification(R.drawable.as_statusbar, null, System.currentTimeMillis());
-				Intent metaIntent = new Intent(this, fm.last.android.activity.Metadata.class);
-				metaIntent.putExtra("artist", mCurrentTrack.artist);
-				metaIntent.putExtra("track", mCurrentTrack.title);
-				PendingIntent contentIntent = PendingIntent.getActivity(this, 0, metaIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 				String info = mCurrentTrack.title + " - " + mCurrentTrack.artist;
-				notification.setLatestEventInfo(this, getString(R.string.scrobbler_info_title), info, contentIntent);
+				notification.setLatestEventInfo(this, getString(R.string.scrobbler_info_title), info, null);
 				notification.flags |= Notification.FLAG_ONGOING_EVENT;
 				try {
 					Field f = Notification.class.getField("priority");
@@ -671,6 +669,46 @@ public class ScrobblerService extends Service {
 	public void stopIfReady() {
 		if (mSubmissionTask == null && mNowPlayingTask == null && mClearNowPlayingTask == null)
 			stopSelf();
+	}
+
+	public static boolean isHTCMusicInstalled(Context ctx) {
+		try {
+			PackageManager pm = ctx.getPackageManager();
+			pm.getPackageInfo("com.htc.music", 0);
+			return true;
+		} catch (Exception e) {
+		}
+		return false;
+	}
+
+	public static String getAndroidMusicPackageName(Context ctx) {
+		try {
+			PackageManager pm = ctx.getPackageManager();
+			pm.getPackageInfo("com.google.android.music", 0);
+			return "com.google.android.music";
+		} catch (Exception e) {
+		}
+		return "com.android.music";
+	}
+
+	@SuppressWarnings("deprecation")
+	public static boolean isAndroidMusicInstalled(Context ctx) {
+		String manufacturer = "";
+		try {
+			Field f = Build.class.getField("MANUFACTURER");
+			manufacturer = (String)f.get(null);
+		} catch (Exception e) {
+		}
+
+		if(Integer.decode(Build.VERSION.SDK) > 8 || manufacturer.toUpperCase().startsWith("LG"))
+			return false;
+		try {
+			PackageManager pm = ctx.getPackageManager();
+			PackageInfo pi = pm.getPackageInfo(getAndroidMusicPackageName(ctx), 0);
+			return pi.versionCode < 300;
+		} catch (Exception e) {
+		}
+		return false;
 	}
 
 	/*

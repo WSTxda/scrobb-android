@@ -20,9 +20,6 @@
  ***************************************************************************/
 package fm.last.android;
 
-import java.net.URL;
-import java.util.concurrent.RejectedExecutionException;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -30,13 +27,11 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import fm.last.android.utils.AsyncTaskEx;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -46,9 +41,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import fm.last.android.activity.Profile;
+
+import java.net.URL;
+import java.util.concurrent.RejectedExecutionException;
+
+import fm.last.android.activity.Preferences;
 import fm.last.android.activity.SignUp;
 import fm.last.android.sync.AccountAuthenticatorService;
+import fm.last.android.utils.AsyncTaskEx;
 import fm.last.api.LastFmServer;
 import fm.last.api.MD5;
 import fm.last.api.Session;
@@ -101,17 +101,6 @@ public class LastFm extends Activity {
 				else
 					query = getIntent().getData().toString();
 				Log.i("LastFm", "Query: " + query);
-				LastFMApplication.getInstance().playRadioStation(this, query, true);
-			} else if (getIntent().getAction() != null && getIntent().getAction().equals("android.appwidget.action.APPWIDGET_CONFIGURE")) {
-				Intent intent = getIntent();
-				Bundle extras = intent.getExtras();
-				if (extras != null) {
-					int appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-					Intent resultValue = new Intent();
-					resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-					setResult(RESULT_OK, resultValue);
-					RadioWidgetProvider.updateAppWidget(this);
-				}
 			} else if (getIntent().getAction() != null && getIntent().getAction().equals("fm.last.android.sync.LOGIN")) {
 				Intent intent = getIntent();
 				Bundle extras = intent.getExtras();
@@ -123,12 +112,12 @@ public class LastFm extends Activity {
 					}
 				}
 			} else {
-				Intent intent = getIntent();
-				intent = new Intent(LastFm.this, Profile.class);
+				Intent intent = new Intent(LastFm.this, Preferences.class);
 				startActivity(intent);
 				Intent i = new Intent("fm.last.android.scrobbler.FLUSH");
 				sendBroadcast(i);
 			}
+
 			finish();
 			return;
 		}
@@ -297,31 +286,14 @@ public class LastFm extends Activity {
 
 				LastFMApplication.getInstance().session = session;
 
-				if (getIntent().getAction() != null && getIntent().getAction().equals("android.appwidget.action.APPWIDGET_CONFIGURE")) {
-					Intent intent = getIntent();
-					Bundle extras = intent.getExtras();
-					if (extras != null) {
-						int appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-						Intent resultValue = new Intent();
-						resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-						setResult(RESULT_OK, resultValue);
-						RadioWidgetProvider.updateAppWidget(LastFm.this);
-					}
-				} else if (getIntent().getAction() != null && getIntent().getAction().equals("fm.last.android.sync.LOGIN")) {
+				if (getIntent().getAction() != null && getIntent().getAction().equals("fm.last.android.sync.LOGIN")) {
 					Intent intent = getIntent();
 					Bundle extras = intent.getExtras();
 					if (extras != null) {
 						finish();
 					}
-				} else if (getIntent().getStringExtra("station") != null) {
-					LastFMApplication.getInstance().playRadioStation(LastFm.this, getIntent().getStringExtra("station"), true);
-				} else {
-					Intent intent = new Intent(LastFm.this, Profile.class);
-					intent.putExtra("lastfm.profile.new_user", mNewUser);
-					if(getIntent() != null && getIntent().getStringExtra(SearchManager.QUERY) != null)
-						intent.putExtra(SearchManager.QUERY, getIntent().getStringExtra(SearchManager.QUERY));
-					startActivity(intent);
 				}
+
 				finish();
 			} else if (wse != null || (e != null && e.getMessage() != null)) {
 				AlertDialog.Builder d = new AlertDialog.Builder(LastFm.this);

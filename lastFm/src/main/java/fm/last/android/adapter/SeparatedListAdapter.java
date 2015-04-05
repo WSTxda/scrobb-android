@@ -16,15 +16,16 @@
  ****************************************************************************/
 package fm.last.android.adapter;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import fm.last.android.R;
 
 public class SeparatedListAdapter extends BaseAdapter {
@@ -63,66 +64,9 @@ public class SeparatedListAdapter extends BaseAdapter {
 			Adapter adapter = sections.get(section);
 			int size = adapter.getCount() + 1;
 
-			// check if position inside this section
-			if (position < size) {
-				if (adapter instanceof LastFMStreamAdapter) {
-					LastFMStreamAdapter ladapter = (LastFMStreamAdapter) adapter;
-					ladapter.enableLoadBar(position - 1);
-					notifyDataSetChanged();
-				}
-				return;
-			}
-
 			// otherwise jump into next section
 			position -= size;
 		}
-	}
-
-	public void disableLoadBar() {
-		for (Object section : this.sections.keySet()) {
-			LastFMStreamAdapter adapter = (LastFMStreamAdapter) sections.get(section);
-			if (adapter != null)
-				adapter.disableLoadBar();
-		}
-	}
-
-	public String getStation(int position) {
-		for (Object section : this.sections.keySet()) {
-			Adapter adapter = sections.get(section);
-			int size = adapter.getCount() + 1;
-
-			// check if position inside this section
-			if (position == 0)
-				return null;
-			if (position < size) {
-				if (adapter instanceof LastFMStreamAdapter) {
-					LastFMStreamAdapter ladapter = (LastFMStreamAdapter) adapter;
-					return ladapter.getStation(position - 1);
-				}
-			}
-
-			// otherwise jump into next section
-			position -= size;
-		}
-		return null;
-	}
-
-	public Adapter getAdapterForPosition(int position) {
-		for (Object section : this.sections.keySet()) {
-			Adapter adapter = sections.get(section);
-			int size = adapter.getCount() + 1;
-
-			// check if position inside this section
-			if (position == 0)
-				return null;
-			if (position < size) {
-				return adapter;
-			}
-
-			// otherwise jump into next section
-			position -= size;
-		}
-		return null;
 	}
 
 	public int getCount() {
