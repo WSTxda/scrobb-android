@@ -5,12 +5,27 @@
 	<PreferenceCategory android:title="@string/prefs_cat_about_title">
 		<Preference
 			android:key="tos"
-			android:title="@string/prefs_tos_title" />
+			android:title="@string/prefs_tos_title">
+
+			<intent
+				android:action="android.intent.action.VIEW"
+				android:data="http://www.last.fm/legal/terms" />
+
+		</Preference>
+
 		<Preference
 			android:key="privacy"
-			android:title="@string/prefs_privacy_title" />
+			android:title="@string/prefs_privacy_title">
+
+			<intent
+				android:action="android.intent.action.VIEW"
+				android:data="http://www.last.fm/legal/privacy" />
+
+		</Preference>
+
 		<Preference
 			android:key="version"
 			android:title="@string/prefs_version_title" />
+
 	</PreferenceCategory>
 </PreferenceScreen>
