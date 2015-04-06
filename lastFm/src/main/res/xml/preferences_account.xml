@@ -6,7 +6,7 @@
 
 		<Preference
 			android:key="current_user"
-			android:title="@string/action_logout" />
+			android:title="@string/prefs_current_user_title" />
 
 	</PreferenceCategory>
 </PreferenceScreen>

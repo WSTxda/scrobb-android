@@ -76,13 +76,6 @@
 			</intent-filter>
 		</activity>
 
-		<activity android:name=".activity.AccountFailActivity">
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
-		</activity>
-
 		<receiver android:name=".scrobbler.MusicIntentReceiver">
 			<intent-filter>
 				<action android:name="fm.last.android.metachanged" />
