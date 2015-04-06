@@ -42,7 +42,6 @@ import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.NotificationCompat;
-import android.widget.Toast;
 
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
@@ -103,25 +102,17 @@ public class ScrobblerService extends Service {
 	public static final String PLAYBACK_ERROR = "fm.last.android.playbackerror";
 	public static final String PLAYBACK_PAUSED = "fm.last.android.playbackpaused";
 	public static final String UNKNOWN = "fm.last.android.unknown";
+
 	SubmitTracksTask mSubmissionTask = null;
 	NowPlayingTask mNowPlayingTask = null;
 	ClearNowPlayingTask mClearNowPlayingTask = null;
 	ScrobblerQueueEntry mCurrentTrack = null;
+
 	private Session mSession;
 	private Lock mScrobblerLock = new ReentrantLock();
 	private Logger logger;
 
 	private String player = null;
-
-	public static boolean isHTCMusicInstalled(Context ctx) {
-		try {
-			PackageManager pm = ctx.getPackageManager();
-			pm.getPackageInfo("com.htc.music", 0);
-			return true;
-		} catch(Exception ignored) {
-		}
-		return false;
-	}
 
 	public static String getAndroidMusicPackageName(Context ctx) {
 		try {
@@ -130,6 +121,7 @@ public class ScrobblerService extends Service {
 			return "com.google.android.music";
 		} catch(Exception ignored) {
 		}
+
 		return "com.android.music";
 	}
 
@@ -142,7 +134,7 @@ public class ScrobblerService extends Service {
 		} catch(Exception ignored) {
 		}
 
-		if(Integer.decode(Build.VERSION.SDK) > 8 || manufacturer.toUpperCase().startsWith("LG")) {
+		if(Build.VERSION.SDK_INT > 8 || manufacturer.toUpperCase().startsWith("LG")) {
 			return false;
 		}
 
@@ -161,14 +153,15 @@ public class ScrobblerService extends Service {
 		super.onCreate();
 
 		logger = Logger.getLogger("fm.last.android.scrobbler");
+
 		try {
 			if(logger.getHandlers().length < 1) {
 				FileHandler handler = new FileHandler(getFilesDir().getAbsolutePath() + "/scrobbler.log", 4096, 1, true);
 				handler.setFormatter(new SimpleFormatter());
 				logger.addHandler(handler);
 			}
+
 		} catch(Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -182,6 +175,7 @@ public class ScrobblerService extends Service {
 
 		try {
 			ScrobblerQueueEntry entry = ScrobblerQueueDao.getInstance().loadCurrentTrack();
+
 			if(entry != null) {
 				if(entry.startTime > System.currentTimeMillis()) {
 					logger.info("Serialized start time is in the future! ignoring");
@@ -189,6 +183,7 @@ public class ScrobblerService extends Service {
 					mCurrentTrack = entry;
 				}
 			}
+
 		} catch(Exception e) {
 			mCurrentTrack = null;
 		}
@@ -246,11 +241,13 @@ public class ScrobblerService extends Service {
 		if(intent.getAction().equals("com.android.music.playstatechanged") || intent.getAction().equals("com.android.music.metachanged")
 				|| intent.getAction().equals("com.android.music.queuechanged")) {
 			long id = -1;
+
 			try {
 				id = intent.getLongExtra("id", -1);
 			} catch(Exception e) {
 				//ignore this
 			}
+
 			if(id == -1) {
 				id = intent.getIntExtra("id", -1);
 			}
@@ -274,10 +271,12 @@ public class ScrobblerService extends Service {
 										nm.cancel(1338);
 										stopSelf();
 									}
+
 								} catch(RemoteException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
+
 								try {
 									LastFMApplication.getInstance().unbindService(this);
 								} catch(IllegalArgumentException ignored) {
@@ -286,13 +285,17 @@ public class ScrobblerService extends Service {
 
 							public void onServiceDisconnected(ComponentName comp) {
 							}
+
 						}, 0);
+
 					} catch(Exception e) {
 						new IntentFromMediaDBTask(i).execute((Void) null);
 					}
+
 				} else {
 					new IntentFromMediaDBTask(i).execute((Void) null);
 				}
+
 			} else {
 				// Clear the current track in case the user has disabled
 				// scrobbling of the media player
@@ -300,10 +303,12 @@ public class ScrobblerService extends Service {
 				mCurrentTrack = null;
 				stopIfReady();
 			}
+
 		} else if((intent.getAction().equals("com.htc.music.playstatechanged") && intent.getIntExtra("id", -1) != -1)
 				|| intent.getAction().equals("com.htc.music.metachanged")) {
 			if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("scrobble_music_player", true)) {
 				bindService(new Intent().setClassName("com.htc.music", "com.htc.music.MediaPlaybackService"), new ServiceConnection() {
+
 					public void onServiceConnected(ComponentName comp, IBinder binder) {
 						com.htc.music.IMediaPlaybackService s = com.htc.music.IMediaPlaybackService.Stub.asInterface(binder);
 
@@ -322,10 +327,12 @@ public class ScrobblerService extends Service {
 								nm.cancel(1338);
 								stopSelf();
 							}
+
 						} catch(RemoteException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
+
 						try {
 							LastFMApplication.getInstance().unbindService(this);
 						} catch(IllegalArgumentException ignored) {
@@ -360,6 +367,7 @@ public class ScrobblerService extends Service {
 				} else if(state == 3) { //complete
 					i.setAction(PLAYBACK_FINISHED);
 				}
+
 				handleIntent(i);
 			}
 
@@ -389,11 +397,13 @@ public class ScrobblerService extends Service {
 			PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 			AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 			am.cancel(alarmIntent); // cancel any pending alarm intents
+
 			if(queueSize > 0) {
 				// schedule an alarm to wake the device and try again in an hour
 				logger.info("Scrobbles are pending, will retry in an hour");
 				am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 3600000, alarmIntent);
 			}
+
 			ScrobblerQueueDao.getInstance().saveCurrentTrack(mCurrentTrack);
 		} catch(Exception e) {
 			logger.severe("Unable to save current track state");
@@ -428,10 +438,12 @@ public class ScrobblerService extends Service {
 			if(played || mCurrentTrack.rating.length() > 0) {
 				logger.info("Enqueuing track (Rating:" + mCurrentTrack.rating + ")");
 				boolean queued = ScrobblerQueueDao.getInstance().addToQueue(mCurrentTrack);
+
 				if(!queued) {
 					logger.severe("Scrobble queue is full!  Have " + ScrobblerQueueDao.MAX_QUEUE_SIZE + " scrobbles!");
 				}
 			}
+
 			mCurrentTrack = null;
 		}
 	}
@@ -476,11 +488,13 @@ public class ScrobblerService extends Service {
 		//If we're allowed to connect to the network, look up the track info on Last.fm
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 		NetworkInfo ni = cm.getActiveNetworkInfo();
+
 		if(ni != null) {
 			boolean scrobbleWifiOnly = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("scrobble_wifi_only", false);
 
-			if(cm.getBackgroundDataSetting() && ni.isConnected() && (!scrobbleWifiOnly || (scrobbleWifiOnly && ni.getType() == ConnectivityManager.TYPE_WIFI))) {
+			if(ni.isAvailable() && ni.isConnected() && (!scrobbleWifiOnly || (scrobbleWifiOnly && ni.getType() == ConnectivityManager.TYPE_WIFI))) {
 				LastFmServer server = AndroidLastFmServerFactory.getServer();
+
 				try {
 					Track t = server.getTrackInfo(artist, track, "");
 					TrackDurationCacheDao.getInstance().save(Collections.singleton(t));
@@ -524,20 +538,24 @@ public class ScrobblerService extends Service {
 			//Try to find the duration in the media db, otherwise get it from last.fm
 			if(intent.getStringExtra("artist") != null && intent.getStringExtra("track") != null) {
 				duration = intent.getLongExtra("duration", 0);
+
 				if(duration == 0) {
 					duration = lookupDuration(intent.getStringExtra("artist"), intent.getStringExtra("track"));
 					intent.putExtra("duration", duration);
 				}
+
 				return intent;
 			}
 
 			//If there was no artist / track in the intent, try to look up the id in the media db
 			long id = -1;
+
 			try {
 				id = intent.getIntExtra("id", -1);
 			} catch(Exception e) {
 				//ignore this
 			}
+
 			if(id == -1) {
 				id = intent.getLongExtra("id", -1);
 			}
@@ -568,6 +586,7 @@ public class ScrobblerService extends Service {
 										MediaStore.Audio.Media.INTERNAL_CONTENT_URI,
 										id), columns, null, null, null);
 					}
+
 					if(!cur.moveToFirst()) {
 						logger.info("no such media in media store: " + id);
 						cur.close();
@@ -607,18 +626,21 @@ public class ScrobblerService extends Service {
 			return;
 		}
 
-		/*if(intent.getAction() != null) { //Dump the intent to the log for troubleshooting buggy apps
-			logger.info("Intent: " + intent.getAction());
-			if(intent.getExtras() != null && intent.getExtras().size() > 0) {
-				for(String key : intent.getExtras().keySet()) {
-					logger.info("Key: " + key + " value: " + intent.getExtras().get(key));
-				}
+		/*
+		//Dump the intent to the log for troubleshooting buggy apps
+		logger.info("Intent: " + intent.getAction());
+
+		if(intent.getExtras() != null && intent.getExtras().size() > 0) {
+			for(String key : intent.getExtras().keySet()) {
+				logger.info("Key: " + key + " value: " + intent.getExtras().get(key));
 			}
-		}*/
+		}
+		*/
 
 		if(intent.getAction().equals(META_CHANGED)) {
 			long startTime = System.currentTimeMillis() / 1000;
 			long position = intent.getLongExtra("position", 0) / 1000;
+
 			if(position > 0) {
 				startTime -= position;
 			}
@@ -634,13 +656,16 @@ public class ScrobblerService extends Service {
 				if(scrobblePoint > 240000) {
 					scrobblePoint = 240000;
 				}
+
 				if(startTime < (mCurrentTrack.startTime + scrobblePoint) && mCurrentTrack.title.equals(title) && mCurrentTrack.artist.equals(artist)) {
 					logger.warning("Ignoring duplicate scrobble");
 					stopIfReady();
 					return;
 				}
+
 				enqueueCurrentTrack();
 			}
+
 			mCurrentTrack = new ScrobblerQueueEntry();
 
 			mCurrentTrack.startTime = startTime;
@@ -648,6 +673,7 @@ public class ScrobblerService extends Service {
 			mCurrentTrack.artist = artist;
 			mCurrentTrack.album = intent.getStringExtra("album");
 			mCurrentTrack.duration = intent.getLongExtra("duration", 0);
+
 			if(mCurrentTrack.duration == 0) {
 				mCurrentTrack.duration = (long) intent.getIntExtra("duration", 0);
 			}
@@ -657,10 +683,13 @@ public class ScrobblerService extends Service {
 				stopIfReady();
 				return;
 			}
+
 			String auth = intent.getStringExtra("trackAuth");
+
 			if(auth != null && auth.length() > 0) {
 				mCurrentTrack.trackAuth = auth;
 			}
+
 			boolean scrobbleRealtime = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("scrobble_realtime", true);
 			if(scrobbleRealtime || auth != null) {
 				ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
@@ -716,14 +745,7 @@ public class ScrobblerService extends Service {
 				nm.cancel(1338);
 			}
 		}
-		if(intent.getAction().equals(LOVE) && mCurrentTrack != null) {
-			mCurrentTrack.rating = "L";
-			Toast.makeText(this, getString(R.string.scrobbler_trackloved), Toast.LENGTH_SHORT).show();
-		}
-		if(intent.getAction().equals(BAN) && mCurrentTrack != null) {
-			mCurrentTrack.rating = "B";
-			Toast.makeText(this, getString(R.string.scrobbler_trackbanned), Toast.LENGTH_SHORT).show();
-		}
+
 		if(intent.getAction().equals("fm.last.android.scrobbler.FLUSH") || mNowPlayingTask == null) {
 			ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 			NetworkInfo ni = cm.getActiveNetworkInfo();
