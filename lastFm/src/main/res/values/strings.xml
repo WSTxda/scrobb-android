@@ -38,8 +38,8 @@
 	<string name="prefs_scrobble_wifi_only_title">Scrobble only on Wi-Fi</string>
 	<string name="prefs_scrobble_wifi_only_summary">Queue media player scrobbles when not connected to Wi-Fi</string>
 	<string name="prefs_cat_about_title">About Scrobb for Last.fm</string>
-	<string name="prefs_tos_title">Terms of Service</string>
-	<string name="prefs_privacy_title">Privacy Policy</string>
+	<string name="prefs_tos_title">Last.fm Terms of Service</string>
+	<string name="prefs_privacy_title">Last.fm Privacy Policy</string>
 	<string name="prefs_version_title">Version</string>
 	<string name="prefs_cat_account_title">User account</string>
 	<string name="prefs_current_user_sum">Logged in as %1$s</string>
