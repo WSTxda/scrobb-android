@@ -22,11 +22,8 @@ package fm.last.android;
 
 import android.app.AlertDialog;
 import android.app.Application;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.os.IBinder;
 import android.util.Log;
 
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
@@ -42,20 +39,7 @@ public class ScrobbApplication extends Application {
 
 	private static ScrobbApplication instance = null;
 	public Session session;
-	public fm.last.android.player.IRadioPlayer player = null;
-	public Context mCtx;
 	public GoogleAnalyticsTracker tracker;
-	private String mRequestedURL;
-	private ServiceConnection mConnection = new ServiceConnection() {
-
-		public void onServiceConnected(ComponentName className, IBinder service) {
-			player = fm.last.android.player.IRadioPlayer.Stub.asInterface(service);
-		}
-
-		public void onServiceDisconnected(ComponentName className) {
-			player = null;
-		}
-	};
 
 	public static ScrobbApplication getInstance() {
 		if(instance != null) {
@@ -77,7 +61,7 @@ public class ScrobbApplication extends Application {
 			version = "";
 		}
 
-		UrlUtil.useragent = "MobileLastFM" + version + " (" + android.os.Build.MODEL + "; " + Locale.getDefault().getCountry().toLowerCase() + "; "
+		UrlUtil.useragent = "Scrobb " + version + " (" + android.os.Build.MODEL + "; " + Locale.getDefault().getCountry().toLowerCase() + "; "
 				+ "Android " + android.os.Build.VERSION.RELEASE + ")";
 
 		// Populate our Session object
@@ -129,29 +113,27 @@ public class ScrobbApplication extends Application {
 			title = R.string.ERROR_SERVER_UNAVAILABLE_TITLE;
 		}
 
-		if(description == 0) {
-			if(error != null) {
-				switch(error.getCode()) {
-					case WSError.ERROR_AuthenticationFailed:
-					case WSError.ERROR_InvalidSession:
-						title = R.string.ERROR_SESSION_TITLE;
-						description = R.string.ERROR_SESSION;
-						break;
-					case WSError.ERROR_InvalidAPIKey:
-						title = R.string.ERROR_UPGRADE_TITLE;
-						description = R.string.ERROR_UPGRADE;
-						break;
-					case WSError.ERROR_SubscribersOnly:
-						title = R.string.ERROR_SUBSCRIPTION_TITLE;
-						description = R.string.ERROR_SUBSCRIPTION;
-						break;
-					default:
-						presentError(ctx, getResources().getString(title), getResources().getString(R.string.ERROR_SERVER_UNAVAILABLE) + "\n\n" + error.getMethod() + ": " + error.getMessage());
-						return;
-				}
-			} else {
-				description = R.string.ERROR_SERVER_UNAVAILABLE;
+		if(error != null) {
+			switch(error.getCode()) {
+				case WSError.ERROR_AuthenticationFailed:
+				case WSError.ERROR_InvalidSession:
+					title = R.string.ERROR_SESSION_TITLE;
+					description = R.string.ERROR_SESSION;
+					break;
+				case WSError.ERROR_InvalidAPIKey:
+					title = R.string.ERROR_UPGRADE_TITLE;
+					description = R.string.ERROR_UPGRADE;
+					break;
+				case WSError.ERROR_SubscribersOnly:
+					title = R.string.ERROR_SUBSCRIPTION_TITLE;
+					description = R.string.ERROR_SUBSCRIPTION;
+					break;
+				default:
+					presentError(ctx, getResources().getString(title), getResources().getString(R.string.ERROR_SERVER_UNAVAILABLE) + "\n\n" + error.getMethod() + ": " + error.getMessage());
+					return;
 			}
+		} else {
+			description = R.string.ERROR_SERVER_UNAVAILABLE;
 		}
 
 		presentError(ctx, getResources().getString(title), getResources().getString(description));
