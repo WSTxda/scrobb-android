@@ -671,6 +671,8 @@ public class ScrobblerService extends Service {
 						.setContentTitle(getString(R.string.scrobbler_info_title))
 						.setContentText(info)
 						.setOngoing(true)
+						.setPriority(NotificationCompat.PRIORITY_MIN)
+						.setCategory(NotificationCompat.CATEGORY_SERVICE)
 						.build();
 
 				try {
