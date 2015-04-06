@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">Scrobb</string>
+
+	<!-- LastFm main activity -->
+	<string name="main_username">Nom d\'utilisateur</string>
+	<string name="main_password">Mot de passe</string>
+	<string name="main_login">Connexion</string>
+	<string name="main_signup">Inscription</string>
+	<string name="main_newaccount">Pas encore de compte ?</string>
+	<string name="main_authenticating">Connexion…</string>
+	<string name="main_forgotpassword">Mot de passe oublié</string>
+
+	<!-- SignUp activity -->
+	<string name="signup_label">Scrobb: Inscription à Last.fm</string>
+	<string name="signup_create_account">Créer un compte</string>
+	<string name="signup_username">Nom d\'utilisateur</string>
+	<string name="signup_password">Mot de passe</string>
+	<string name="signup_email">Adresse email</string>
+	<string name="signup_saving">Création de votre compte</string>
+
+	<!-- Preferences activity -->
+	<string name="prefs_label">Scrobb: Préférences</string>
+	<string name="prefs_cat_scrobbler_title">Scrobbler</string>
+	<string name="prefs_scrobble_title">Activer le scrobbling</string>
+	<string name="prefs_scrobble_percentage">Pourcentage de lecture d\'un morceau avant le scrobble</string>
+	<string name="prefs_scrobble_perc_title">Pourcentage avant scrobble</string>
+	<string name="prefs_scrobble_summary">Mettre à jour votre profil Last.fm lorsque vous écoutez de la musique</string>
+	<string name="prefs_scrobble_music_player_title">Scrobbler le lecteur Android</string>
+	<string name="prefs_scrobble_music_player_summary">Scrobbler le lecteur audio Android de base</string>
+	<string name="prefs_scrobble_sls_title">Support SLS</string>
+	<string name="prefs_scrobble_sls_summary">Scrobbler les applications qui utilisent l\'API Simple Last.fm Scrobbler </string>
+	<string name="prefs_scrobble_sdroid_title">Support ScrobbleDroid</string>
+	<string name="prefs_scrobble_sdroid_summary">Scrobbler les applications utilisant l\'API ScrobbleDroid</string>
+	<string name="prefs_scrobble_realtime_title">Scrobble en temps réel</string>
+	<string name="prefs_scrobble_realtime_summary">Envoyer immédiatement les information du morceau en lecture et les scrobbles</string>
+	<string name="prefs_scrobble_wifi_only_title">Scrobbler uniquement en Wi-Fi</string>
+	<string name="prefs_scrobble_wifi_only_summary">Mettre en attente les scrobbles tant que le Wi-Fi n\'est pas disponible</string>
+	<string name="prefs_cat_about_title">À propos de Scrobb pour Last.fm</string>
+	<string name="prefs_tos_title">Conditions d\'utilisation</string>
+	<string name="prefs_privacy_title">Politique de confidentialité</string>
+	<string name="prefs_version_title">Version</string>
+	<string name="prefs_cat_account_title">Compte Last.fm</string>
+	<string name="prefs_current_user_sum">Connecté(e) en tant que %1$s</string>
+	<string name="prefs_current_user_title">Déconnexion</string>
+
+	<string name="prefs_license_title">Licence</string>
+	<string name="prefs_license_sum">© 2015 Baptiste Candellier – outa[dev]\n© 2005–2009 Last.fm Ltd.\nPortions contributed by Casey Link, Lukasz Wisniewski, Mike Jennings, and Michael Novak Jr.\n\nThis program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public Licenseas published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</string>
+
+	<string name="prefs_source_title">Code source</string>
+	<string name="prefs_source_sum">Ce projet est basé sur l\'application Last.fm officielle, et les sources sont disponibles sur Github</string>
+
+	<!-- Scrobbler service -->
+	<string name="scrobbler_label">Scrobb: Scrobbler</string>
+	<string name="scrobbler_info_title">Scrobbling en cours</string>
+
+	<!-- some strings common to different activities -->
+	<string name="common_ok">OK</string>
+
+	<!-- error message dialogs -->
+	<string name="ERROR_AUTH">Connexion à votre compte Last.fm impossible. Vérifiez votre nom d\'utilisateur et votre mot de passe.</string>
+	<string name="ERROR_AUTH_TITLE">Mauvais nom d\'utilisateur</string>
+	<string name="ERROR_MISSINGINFO">Le nom d\'utilisateur et le mot de passe sont requis. Si vous n\'avez pas de compte, cliquez sur le bouton Inscription.</string>
+	<string name="ERROR_MISSINGINFO_TITLE">Données requises</string>
+	<string name="ERROR_SERVER_UNAVAILABLE">Problème de communication avec les serveurs de Last.fm. Réessayez plus tard.</string>
+	<string name="ERROR_SERVER_UNAVAILABLE_TITLE">Erreur de communication</string>
+	<string name="ERROR_SESSION">L\'application n\'est plus liée à votre compte Last.fm. Vous devez vous reconnecter.</string>
+	<string name="ERROR_SESSION_TITLE">Session invalide</string>
+	<string name="ERROR_SUBSCRIPTION">Vérifiez l\'état de votre abonnement sur le site web Last.fm.</string>
+	<string name="ERROR_SUBSCRIPTION_TITLE">Abonnement requis</string>
+	<string name="ERROR_UPGRADE">Vous devez mettre à jour l\'application pour continuer à l\'utiliser. Mettez à jour, puis réessayez.</string>
+	<string name="ERROR_UPGRADE_TITLE">Mise à jour requise</string>
+	<string name="ERROR_SIGNUP_TITLE">Inscription impossible</string>
+
+</resources>

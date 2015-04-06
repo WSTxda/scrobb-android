@@ -23,7 +23,7 @@
 	<string name="prefs_label">Scrobb: Preferences</string>
 	<string name="prefs_cat_scrobbler_title">Scrobbler</string>
 	<string name="prefs_scrobble_title">Enable Scrobbling</string>
-	<string name="prefs_scrobble_percentage">Set the percentage of a track\'s playtime required to scrobble.</string>
+	<string name="prefs_scrobble_percentage">Set the percentage of a track\'s playtime required to scrobble</string>
 	<string name="prefs_scrobble_perc_title">Scrobble Percentage</string>
 	<string name="prefs_scrobble_summary">Update your Last.fm profile as you listen to music</string>
 	<string name="prefs_scrobble_music_player_title">Scrobble Android player</string>
@@ -33,7 +33,7 @@
 	<string name="prefs_scrobble_sdroid_title">ScrobbleDroid support</string>
 	<string name="prefs_scrobble_sdroid_summary">Scrobble apps that use the ScrobbleDroid API</string>
 	<string name="prefs_scrobble_realtime_title">Scrobble in real-time</string>
-	<string name="prefs_scrobble_realtime_summary">Sends now-playing information and uploads scrobbles immediately.</string>
+	<string name="prefs_scrobble_realtime_summary">Sends now-playing information and uploads scrobbles immediately</string>
 	<string name="prefs_scrobble_wifi_only_title">Scrobble only on Wi-Fi</string>
 	<string name="prefs_scrobble_wifi_only_summary">Queue media player scrobbles when not connected to Wi-Fi</string>
 	<string name="prefs_cat_about_title">About Scrobb for Last.fm</string>
@@ -48,7 +48,7 @@
 	<string name="prefs_license_sum">© 2015 Baptiste Candellier – outa[dev]\n© 2005–2009 Last.fm Ltd.\nPortions contributed by Casey Link, Lukasz Wisniewski, Mike Jennings, and Michael Novak Jr.\n\nThis program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public Licenseas published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</string>
 
 	<string name="prefs_source_title">Source Code</string>
-	<string name="prefs_source_sum">This project is based on the official Last.fm app, and the sources are available on Github.</string>
+	<string name="prefs_source_sum">This project is based on the official Last.fm app, and the sources are available on Github</string>
 
 	<!-- Scrobbler service -->
 	<string name="scrobbler_label">Scrobb: Scrobbler</string>
