@@ -481,6 +481,7 @@ public class ScrobblerService extends Service {
 		//Check to see if we've cached it from a previous network lookup
 		long duration = TrackDurationCacheDao.getInstance().getDurationForTrack(artist, track);
 		logger.info("Duration from cache: " + duration);
+
 		if(duration > 0) {
 			return duration;
 		}
@@ -504,6 +505,7 @@ public class ScrobblerService extends Service {
 				}
 			}
 		}
+
 		return 0;
 	}
 
@@ -612,11 +614,13 @@ public class ScrobblerService extends Service {
 							intent.putExtra("duration", duration);
 						}
 					}
+
 				} finally {
 					cur.close();
 				}
 			}
 		}
+
 		return intent;
 	}
 
@@ -691,12 +695,15 @@ public class ScrobblerService extends Service {
 			}
 
 			boolean scrobbleRealtime = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("scrobble_realtime", true);
+
 			if(scrobbleRealtime || auth != null) {
 				ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 				NetworkInfo ni = cm.getActiveNetworkInfo();
+
 				if(ni != null) {
 					boolean scrobbleWifiOnly = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("scrobble_wifi_only", false);
-					if(cm.getBackgroundDataSetting() && ni.isConnected() && (!scrobbleWifiOnly || (scrobbleWifiOnly && ni.getType() == ConnectivityManager.TYPE_WIFI) || auth != null && mNowPlayingTask == null)) {
+
+					if(ni.isAvailable() && ni.isConnected() && (!scrobbleWifiOnly || (scrobbleWifiOnly && ni.getType() == ConnectivityManager.TYPE_WIFI) || auth != null && mNowPlayingTask == null)) {
 						mNowPlayingTask = new NowPlayingTask(mCurrentTrack.toRadioTrack());
 						mNowPlayingTask.execute();
 					}
@@ -726,16 +733,19 @@ public class ScrobblerService extends Service {
 				nm.notify(1338, notification);
 			}
 		}
+
 		if(intent.getAction().equals(PLAYBACK_FINISHED) || intent.getAction().equals("com.android.music.playbackcomplete")
 				|| intent.getAction().equals("com.htc.music.playbackcomplete")) {
 			if(mCurrentTrack != null) {
 				mClearNowPlayingTask = new ClearNowPlayingTask(mCurrentTrack.toRadioTrack());
 				mClearNowPlayingTask.execute();
 			}
+
 			enqueueCurrentTrack();
 			NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 			nm.cancel(1338);
 		}
+
 		if(intent.getAction().equals(PLAYBACK_PAUSED) && mCurrentTrack != null) {
 			if(intent.getLongExtra("position", 0) > 0 || !intent.hasExtra("position")) { //Work-around for buggy DoubleTwist player
 				mClearNowPlayingTask = new ClearNowPlayingTask(mCurrentTrack.toRadioTrack());
@@ -753,7 +763,7 @@ public class ScrobblerService extends Service {
 			if(ni != null) {
 				boolean scrobbleWifiOnly = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("scrobble_wifi_only", false);
 
-				if(cm.getBackgroundDataSetting() && ni.isConnected() && (!scrobbleWifiOnly || (scrobbleWifiOnly && ni.getType() == ConnectivityManager.TYPE_WIFI))) {
+				if(ni.isAvailable() && ni.isConnected() && (!scrobbleWifiOnly || (scrobbleWifiOnly && ni.getType() == ConnectivityManager.TYPE_WIFI))) {
 					int queueSize = 0;
 					try {
 						queueSize = ScrobblerQueueDao.getInstance().getQueueSize();
@@ -767,6 +777,7 @@ public class ScrobblerService extends Service {
 				}
 			}
 		}
+
 		stopIfReady();
 	}
 
@@ -818,6 +829,7 @@ public class ScrobblerService extends Service {
 			} finally {
 				mScrobblerLock.unlock();
 			}
+
 			return success;
 		}
 
@@ -844,7 +856,8 @@ public class ScrobblerService extends Service {
 					mSubmissionTask = new SubmitTracksTask();
 					mSubmissionTask.execute();
 				}
-			} catch(Exception e) { //The scrobbler db might be locked, this isn't fatal as we can retry later
+			} catch(Exception e) {
+				//The scrobbler db might be locked, this isn't fatal as we can retry later
 			}
 		}
 
@@ -895,6 +908,7 @@ public class ScrobblerService extends Service {
 						if(e.rating.equals("L")) {
 							server.loveTrack(e.artist, e.title, mSession.getKey());
 						}
+
 						if(e.rating.equals("B")) {
 							if(e.trackAuth.length() == 0) {
 								//Local tracks can't be banned, so drop them
@@ -902,13 +916,17 @@ public class ScrobblerService extends Service {
 								ScrobblerQueueDao.getInstance().removeFromQueue(e);
 								continue;
 							}
+
 							server.banTrack(e.artist, e.title, mSession.getKey());
 						}
+
 						if(!e.rating.equals("B") && !e.rating.equals("S")) {
 							server.scrobbleTrack(e.artist, e.title, e.album, e.startTime, (int) (e.duration / 1000), ScrobblerService.this.player, e.trackAuth, mSession.getKey());
 						}
+
 						success = true;
 					}
+
 				} catch(Exception ex) {
 					logger.severe("Unable to submit track: " + ex.toString());
 					ex.printStackTrace();
@@ -918,6 +936,7 @@ public class ScrobblerService extends Service {
 					ex.printStackTrace();
 					success = true; //Remove the track from the queue
 				}
+
 				if(success) {
 					ScrobblerQueueDao.getInstance().removeFromQueue(e);
 				} else {
@@ -925,6 +944,7 @@ public class ScrobblerService extends Service {
 					break;
 				}
 			}
+
 			mScrobblerLock.unlock();
 			return success;
 		}
