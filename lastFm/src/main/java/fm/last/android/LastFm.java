@@ -84,7 +84,7 @@ public class LastFm extends Activity {
 			} else {
 				Intent intent = new Intent(LastFm.this, Preferences.class);
 				startActivity(intent);
-				Intent i = new Intent("fm.last.android.scrobbler.FLUSH");
+				Intent i = new Intent("fr.outadev.lastfm.scrobb.scrobbler.FLUSH");
 				sendBroadcast(i);
 			}
 
@@ -246,14 +246,6 @@ public class LastFm extends Activity {
 				editor.apply();
 
 				LastFMApplication.getInstance().session = session;
-
-				if(getIntent().getAction() != null && getIntent().getAction().equals("fm.last.android.sync.LOGIN")) {
-					Intent intent = getIntent();
-					Bundle extras = intent.getExtras();
-					if(extras != null) {
-						finish();
-					}
-				}
 
 				Intent i = new Intent(LastFm.this, Preferences.class);
 				startActivity(i);

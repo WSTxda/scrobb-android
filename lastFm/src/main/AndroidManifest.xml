@@ -94,13 +94,7 @@
 				<action android:name="fm.last.android.playstatechanged" />
 				<action android:name="fm.last.android.playbackcomplete" />
 				<action android:name="fm.last.android.playbackpaused" />
-				<action android:name="fm.last.android.scrobbler.FLUSH" />
-			</intent-filter>
-		</receiver>
-		<receiver android:name=".scrobbler.RatingIntentReceiver">
-			<intent-filter>
-				<action android:name="fm.last.android.LOVE" />
-				<action android:name="fm.last.android.BAN" />
+				<action android:name="fr.outadev.lastfm.scrobb.scrobbler.FLUSH" />
 			</intent-filter>
 		</receiver>
 		<receiver android:name=".scrobbler.AndroidMusicIntentReceiver">

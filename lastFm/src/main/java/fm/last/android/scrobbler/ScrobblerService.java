@@ -343,7 +343,7 @@ public class ScrobblerService extends Service {
 		}
 
 		try {
-			Intent intent = new Intent("fm.last.android.scrobbler.FLUSH");
+			Intent intent = new Intent("fr.outadev.lastfm.scrobb.scrobbler.FLUSH");
 			PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 			AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 			am.cancel(alarmIntent); // cancel any pending alarm intents
@@ -706,7 +706,7 @@ public class ScrobblerService extends Service {
 			}
 		}
 
-		if(intent.getAction().equals("fm.last.android.scrobbler.FLUSH") || mNowPlayingTask == null) {
+		if(intent.getAction().equals("fr.outadev.lastfm.scrobb.scrobbler.FLUSH") || mNowPlayingTask == null) {
 			ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 			NetworkInfo ni = cm.getActiveNetworkInfo();
 

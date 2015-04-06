@@ -72,7 +72,7 @@ public class LastFMApplication extends Application {
 
 		String version;
 		try {
-			version = "/" + LastFMApplication.getInstance().getPackageManager().getPackageInfo("fm.last.android", 0).versionName;
+			version = "/" + LastFMApplication.getInstance().getPackageManager().getPackageInfo("fr.outadev.lastfm.scrobb", 0).versionName;
 		} catch(Exception e) {
 			version = "";
 		}
