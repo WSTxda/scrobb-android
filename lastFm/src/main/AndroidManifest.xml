@@ -43,7 +43,7 @@
 		<activity
 			android:name=".MainActivity"
 			android:configChanges="keyboardHidden"
-			android:label="@string/signin_label">
+			android:label="@string/app_name">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
 				<action android:name="android.intent.action.MAIN" />

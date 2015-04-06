@@ -12,7 +12,6 @@
 	<string name="main_forgotpassword">Forgot Password</string>
 
 	<!-- SignUp activity -->
-	<string name="signin_label">Scrobb for Last.fm</string>
 	<string name="signup_label">Scrobb: Sign Up to Last.fm</string>
 	<string name="signup_create_account">Create Account</string>
 	<string name="signup_username">Username</string>
