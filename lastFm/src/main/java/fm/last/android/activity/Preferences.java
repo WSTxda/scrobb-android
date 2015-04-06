@@ -29,85 +29,85 @@ public class Preferences extends PreferenceActivity {
 			if(preference.getKey().equals("scrobble")) {
 				if((Boolean) newValue) {
 					getPackageManager().setComponentEnabledSetting(
-							new ComponentName("fr.outadev.lastfm.scrobb", "fr.outadev.lastfm.scrobb.scrobbler.MusicIntentReceiver"),
+							new ComponentName("fr.outadev.lastfm.scrobb", "fm.last.android.scrobbler.MusicIntentReceiver"),
 							PackageManager.COMPONENT_ENABLED_STATE_DEFAULT, PackageManager.DONT_KILL_APP);
 
 					//Re-enable the rest of the recievers to match the current preference state
 					if(preference.getSharedPreferences().getBoolean("scrobble_music_player", true)) {
 						getPackageManager().setComponentEnabledSetting(
-								new ComponentName("fr.outadev.lastfm.scrobb", "fr.outadev.lastfm.scrobb.scrobbler.AndroidMusicIntentReceiver"),
+								new ComponentName("fr.outadev.lastfm.scrobb", "fm.last.android.scrobbler.AndroidMusicIntentReceiver"),
 								PackageManager.COMPONENT_ENABLED_STATE_DEFAULT, PackageManager.DONT_KILL_APP);
 					} else {
 						getPackageManager().setComponentEnabledSetting(
-								new ComponentName("fr.outadev.lastfm.scrobb", "fr.outadev.lastfm.scrobb.scrobbler.AndroidMusicIntentReceiver"),
+								new ComponentName("fr.outadev.lastfm.scrobb", "fm.last.android.scrobbler.AndroidMusicIntentReceiver"),
 								PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 					}
 
 					if(preference.getSharedPreferences().getBoolean("scrobble_sdroid", true)) {
 						getPackageManager().setComponentEnabledSetting(
-								new ComponentName("fr.outadev.lastfm.scrobb", "fr.outadev.lastfm.scrobb.scrobbler.ScrobbleDroidIntentReceiver"),
+								new ComponentName("fr.outadev.lastfm.scrobb", "fm.last.android.scrobbler.ScrobbleDroidIntentReceiver"),
 								PackageManager.COMPONENT_ENABLED_STATE_DEFAULT, PackageManager.DONT_KILL_APP);
 					} else {
 						getPackageManager().setComponentEnabledSetting(
-								new ComponentName("fr.outadev.lastfm.scrobb", "fr.outadev.lastfm.scrobb.scrobbler.ScrobbleDroidIntentReceiver"),
+								new ComponentName("fr.outadev.lastfm.scrobb", "fm.last.android.scrobbler.ScrobbleDroidIntentReceiver"),
 								PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 					}
 
 					if(preference.getSharedPreferences().getBoolean("scrobble_sls", true)) {
 						getPackageManager().setComponentEnabledSetting(
-								new ComponentName("fr.outadev.lastfm.scrobb", "fr.outadev.lastfm.scrobb.scrobbler.SLSIntentReceiver"),
+								new ComponentName("fr.outadev.lastfm.scrobb", "fm.last.android.scrobbler.SLSIntentReceiver"),
 								PackageManager.COMPONENT_ENABLED_STATE_DEFAULT, PackageManager.DONT_KILL_APP);
 					} else {
 						getPackageManager().setComponentEnabledSetting(
-								new ComponentName("fr.outadev.lastfm.scrobb", "fr.outadev.lastfm.scrobb.scrobbler.SLSIntentReceiver"),
+								new ComponentName("fr.outadev.lastfm.scrobb", "fm.last.android.scrobbler.SLSIntentReceiver"),
 								PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 					}
 
 				} else {
 					getPackageManager().setComponentEnabledSetting(
-							new ComponentName("fr.outadev.lastfm.scrobb", "fr.outadev.lastfm.scrobb.scrobbler.MusicIntentReceiver"),
+							new ComponentName("fr.outadev.lastfm.scrobb", "fm.last.android.scrobbler.MusicIntentReceiver"),
 							PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 					getPackageManager().setComponentEnabledSetting(
-							new ComponentName("fr.outadev.lastfm.scrobb", "fr.outadev.lastfm.scrobb.scrobbler.AndroidMusicIntentReceiver"),
+							new ComponentName("fr.outadev.lastfm.scrobb", "fm.last.android.scrobbler.AndroidMusicIntentReceiver"),
 							PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 					getPackageManager().setComponentEnabledSetting(
-							new ComponentName("fr.outadev.lastfm.scrobb", "fr.outadev.lastfm.scrobb.scrobbler.ScrobbleDroidIntentReceiver"),
+							new ComponentName("fr.outadev.lastfm.scrobb", "fm.last.android.scrobbler.ScrobbleDroidIntentReceiver"),
 							PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 					getPackageManager().setComponentEnabledSetting(
-							new ComponentName("fr.outadev.lastfm.scrobb", "fr.outadev.lastfm.scrobb.scrobbler.SLSIntentReceiver"),
+							new ComponentName("fr.outadev.lastfm.scrobb", "fm.last.android.scrobbler.SLSIntentReceiver"),
 							PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 				}
 
 			} else if(preference.getKey().equals("scrobble_music_player")) {
 				if((Boolean) newValue) {
 					getPackageManager().setComponentEnabledSetting(
-							new ComponentName("fr.outadev.lastfm.scrobb", "fr.outadev.lastfm.scrobb.scrobbler.AndroidMusicIntentReceiver"),
+							new ComponentName("fr.outadev.lastfm.scrobb", "fm.last.android.scrobbler.AndroidMusicIntentReceiver"),
 							PackageManager.COMPONENT_ENABLED_STATE_DEFAULT, PackageManager.DONT_KILL_APP);
 				} else {
 					getPackageManager().setComponentEnabledSetting(
-							new ComponentName("fr.outadev.lastfm.scrobb", "fr.outadev.lastfm.scrobb.scrobbler.AndroidMusicIntentReceiver"),
+							new ComponentName("fr.outadev.lastfm.scrobb", "fm.last.android.scrobbler.AndroidMusicIntentReceiver"),
 							PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 				}
 
 			} else if(preference.getKey().equals("scrobble_sdroid")) {
 				if((Boolean) newValue) {
 					getPackageManager().setComponentEnabledSetting(
-							new ComponentName("fr.outadev.lastfm.scrobb", "fr.outadev.lastfm.scrobb.scrobbler.ScrobbleDroidIntentReceiver"),
+							new ComponentName("fr.outadev.lastfm.scrobb", "fm.last.android.scrobbler.ScrobbleDroidIntentReceiver"),
 							PackageManager.COMPONENT_ENABLED_STATE_DEFAULT, PackageManager.DONT_KILL_APP);
 				} else {
 					getPackageManager().setComponentEnabledSetting(
-							new ComponentName("fr.outadev.lastfm.scrobb", "fr.outadev.lastfm.scrobb.scrobbler.ScrobbleDroidIntentReceiver"),
+							new ComponentName("fr.outadev.lastfm.scrobb", "fm.last.android.scrobbler.ScrobbleDroidIntentReceiver"),
 							PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 				}
 
 			} else if(preference.getKey().equals("scrobble_sls")) {
 				if((Boolean) newValue) {
 					getPackageManager().setComponentEnabledSetting(
-							new ComponentName("fr.outadev.lastfm.scrobb", "fr.outadev.lastfm.scrobb.scrobbler.SLSIntentReceiver"),
+							new ComponentName("fr.outadev.lastfm.scrobb", "fm.last.android.scrobbler.SLSIntentReceiver"),
 							PackageManager.COMPONENT_ENABLED_STATE_DEFAULT, PackageManager.DONT_KILL_APP);
 				} else {
 					getPackageManager().setComponentEnabledSetting(
-							new ComponentName("fr.outadev.lastfm.scrobb", "fr.outadev.lastfm.scrobb.scrobbler.SLSIntentReceiver"),
+							new ComponentName("fr.outadev.lastfm.scrobb", "fm.last.android.scrobbler.SLSIntentReceiver"),
 							PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 				}
 			}
