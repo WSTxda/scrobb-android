@@ -43,15 +43,11 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.NotificationCompat;
 
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.FileHandler;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 import fm.last.android.AndroidLastFmServerFactory;
 import fm.last.android.LastFMApplication;
@@ -153,18 +149,6 @@ public class ScrobblerService extends Service {
 		super.onCreate();
 
 		logger = Logger.getLogger("fm.last.android.scrobbler");
-
-		try {
-			if(logger.getHandlers().length < 1) {
-				FileHandler handler = new FileHandler(getFilesDir().getAbsolutePath() + "/scrobbler.log", 4096, 1, true);
-				handler.setFormatter(new SimpleFormatter());
-				logger.addHandler(handler);
-			}
-
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-
 		mSession = LastFMApplication.getInstance().session;
 
 		if(mSession == null || !PreferenceManager.getDefaultSharedPreferences(this).getBoolean("scrobble", true)) {
@@ -186,40 +170,6 @@ public class ScrobblerService extends Service {
 
 		} catch(Exception e) {
 			mCurrentTrack = null;
-		}
-
-		try {
-			if(getFileStreamPath("queue.dat").exists()) {
-				logger.info("Migrating old scrobble queue");
-				FileInputStream fileStream = openFileInput("queue.dat");
-				ObjectInputStream objectStream = new ObjectInputStream(fileStream);
-				Object obj = objectStream.readObject();
-
-				if(obj instanceof Integer) {
-					Integer count = (Integer) obj;
-
-					for(int i = 0; i < count; i++) {
-						obj = objectStream.readObject();
-
-						if(obj != null && obj instanceof ScrobblerQueueEntry) {
-							try {
-								ScrobblerQueueDao.getInstance().addToQueue((ScrobblerQueueEntry) obj);
-							} catch(IllegalStateException e) {
-								break; //The queue is full!
-							}
-						}
-					}
-
-					logger.info("Imported " + count + " tracks");
-				}
-
-				objectStream.close();
-				fileStream.close();
-				deleteFile("queue.dat");
-			}
-
-		} catch(Exception e) {
-			e.printStackTrace();
 		}
 	}
 
