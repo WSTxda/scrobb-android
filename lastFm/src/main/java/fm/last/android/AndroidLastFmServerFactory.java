@@ -1,5 +1,5 @@
-package fm.last.android;
 /***************************************************************************
+ *   Copyright 2015 Baptiste Candellier - outa[dev]                        *
  *   Copyright 2005-2009 Last.fm Ltd.                                      *
  *   Portions contributed by Casey Link, Lukasz Wisniewski,                *
  *   Mike Jennings, and Michael Novak Jr.                                  *
@@ -20,6 +20,7 @@ package fm.last.android;
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+package fm.last.android;
 
 import fm.last.api.LastFmServer;
 import fm.last.api.LastFmServerFactory;
