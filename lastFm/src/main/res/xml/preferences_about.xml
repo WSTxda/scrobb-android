@@ -10,7 +10,6 @@
 			<intent
 				android:action="android.intent.action.VIEW"
 				android:data="http://www.last.fm/legal/terms" />
-
 		</Preference>
 
 		<Preference
@@ -20,7 +19,19 @@
 			<intent
 				android:action="android.intent.action.VIEW"
 				android:data="http://www.last.fm/legal/privacy" />
+		</Preference>
 
+		<Preference
+			android:summary="@string/prefs_license_sum"
+			android:title="@string/prefs_license_title" />
+
+		<Preference
+			android:summary="@string/prefs_source_sum"
+			android:title="@string/prefs_source_title">
+
+			<intent
+				android:action="android.intent.action.VIEW"
+				android:data="https://github.com/outadoc/scrobb-android" />
 		</Preference>
 
 		<Preference

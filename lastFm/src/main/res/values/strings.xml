@@ -8,7 +8,7 @@
 	<string name="main_login">Log in</string>
 	<string name="main_signup">Sign up</string>
 	<string name="main_newaccount">Haven\'t got an account yet?</string>
-	<string name="main_authenticating">Authenticating</string>
+	<string name="main_authenticating">Authenticating…</string>
 	<string name="main_forgotpassword">Forgot Password</string>
 
 	<!-- SignUp activity -->
@@ -44,6 +44,12 @@
 	<string name="prefs_cat_account_title">User account</string>
 	<string name="prefs_current_user_sum">Logged in as %1$s</string>
 	<string name="prefs_current_user_title">Logout</string>
+
+	<string name="prefs_license_title">License</string>
+	<string name="prefs_license_sum">© 2015 Baptiste Candellier – outa[dev]\n© 2005–2009 Last.fm Ltd.\nPortions contributed by Casey Link, Lukasz Wisniewski, Mike Jennings, and Michael Novak Jr.\n\nThis program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public Licenseas published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</string>
+
+	<string name="prefs_source_title">Source Code</string>
+	<string name="prefs_source_sum">This project is based on the official Last.fm app, and the sources are available on Github.</string>
 
 	<!-- Scrobbler service -->
 	<string name="scrobbler_label">Scrobb: Scrobbler</string>
