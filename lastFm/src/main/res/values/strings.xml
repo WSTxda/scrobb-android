@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">Scrobb</string>
+	<string name="app_name" translatable="false">Scrobb</string>
 
 	<!-- LastFm main activity -->
 	<string name="main_username">Username</string>
