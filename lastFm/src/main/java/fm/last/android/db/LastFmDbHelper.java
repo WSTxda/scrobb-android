@@ -3,7 +3,7 @@ package fm.last.android.db;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import fm.last.android.LastFMApplication;
+import fm.last.android.ScrobbApplication;
 
 public class LastFmDbHelper extends SQLiteOpenHelper {
 
@@ -24,7 +24,7 @@ public class LastFmDbHelper extends SQLiteOpenHelper {
 	private static LastFmDbHelper instance = null;
 
 	private LastFmDbHelper() {
-		super(LastFMApplication.getInstance().getApplicationContext(), DB_NAME, null, DB_VERSION);
+		super(ScrobbApplication.getInstance().getApplicationContext(), DB_NAME, null, DB_VERSION);
 	}
 
 	/**

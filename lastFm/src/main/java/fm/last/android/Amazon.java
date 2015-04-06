@@ -65,7 +65,7 @@ public class Amazon {
 				intent.putExtra("actionSearchType", searchType);
 				ctx.startActivity(intent);
 			} catch(Exception e1) {
-				LastFMApplication.getInstance().presentError(ctx, ctx.getString(R.string.ERROR_AMAZON_TITLE), ctx.getString(R.string.ERROR_AMAZON));
+				ScrobbApplication.getInstance().presentError(ctx, ctx.getString(R.string.ERROR_AMAZON_TITLE), ctx.getString(R.string.ERROR_AMAZON));
 			}
 		}
 	}
@@ -88,7 +88,7 @@ public class Amazon {
 				intent.putExtra("actionSearchType", searchType);
 				ctx.startActivity(intent);
 			} catch(Exception e1) {
-				LastFMApplication.getInstance().presentError(ctx, ctx.getString(R.string.ERROR_AMAZON_TITLE), ctx.getString(R.string.ERROR_AMAZON));
+				ScrobbApplication.getInstance().presentError(ctx, ctx.getString(R.string.ERROR_AMAZON_TITLE), ctx.getString(R.string.ERROR_AMAZON));
 			}
 		}
 	}

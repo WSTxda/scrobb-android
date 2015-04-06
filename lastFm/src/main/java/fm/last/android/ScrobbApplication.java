@@ -38,9 +38,9 @@ import fm.last.api.Session;
 import fm.last.api.WSError;
 import fm.last.util.UrlUtil;
 
-public class LastFMApplication extends Application {
+public class ScrobbApplication extends Application {
 
-	private static LastFMApplication instance = null;
+	private static ScrobbApplication instance = null;
 	public Session session;
 	public fm.last.android.player.IRadioPlayer player = null;
 	public Context mCtx;
@@ -57,11 +57,11 @@ public class LastFMApplication extends Application {
 		}
 	};
 
-	public static LastFMApplication getInstance() {
+	public static ScrobbApplication getInstance() {
 		if(instance != null) {
 			return instance;
 		} else {
-			return new LastFMApplication();
+			return new ScrobbApplication();
 		}
 	}
 
@@ -72,7 +72,7 @@ public class LastFMApplication extends Application {
 
 		String version;
 		try {
-			version = "/" + LastFMApplication.getInstance().getPackageManager().getPackageInfo("fr.outadev.lastfm.scrobb", 0).versionName;
+			version = "/" + ScrobbApplication.getInstance().getPackageManager().getPackageInfo("fr.outadev.lastfm.scrobb", 0).versionName;
 		} catch(Exception e) {
 			version = "";
 		}
@@ -81,7 +81,7 @@ public class LastFMApplication extends Application {
 				+ "Android " + android.os.Build.VERSION.RELEASE + ")";
 
 		// Populate our Session object
-		SharedPreferences settings = getSharedPreferences(LastFm.PREFS, 0);
+		SharedPreferences settings = getSharedPreferences(MainActivity.PREFS, 0);
 		String username = settings.getString("lastfm_user", "");
 		String session_key = settings.getString("lastfm_session_key", "");
 		String subscriber = settings.getString("lastfm_subscriber", "0");
@@ -106,7 +106,7 @@ public class LastFMApplication extends Application {
 		if(error != null) {
 			Log.e("Last.fm", "Received a webservice error during method: " + error.getMethod() + ", message: " + error.getMessage());
 			try {
-				LastFMApplication.getInstance().tracker.trackEvent("Errors", // Category
+				ScrobbApplication.getInstance().tracker.trackEvent("Errors", // Category
 						error.getMethod(), // Action
 						error.getMessage(), // Label
 						0); // Value
@@ -171,7 +171,7 @@ public class LastFMApplication extends Application {
 	}
 
 	public void logout() {
-		SharedPreferences settings = getSharedPreferences(LastFm.PREFS, 0);
+		SharedPreferences settings = getSharedPreferences(MainActivity.PREFS, 0);
 		SharedPreferences.Editor editor = settings.edit();
 
 		editor.remove("lastfm_user");

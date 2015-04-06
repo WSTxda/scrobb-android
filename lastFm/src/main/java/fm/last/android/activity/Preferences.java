@@ -13,9 +13,9 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 
-import fm.last.android.LastFMApplication;
-import fm.last.android.LastFm;
+import fm.last.android.MainActivity;
 import fm.last.android.R;
+import fm.last.android.ScrobbApplication;
 
 
 /**
@@ -126,7 +126,7 @@ public class Preferences extends PreferenceActivity {
 		addPreferencesFromResource(R.xml.preferences_account);
 		addPreferencesFromResource(R.xml.preferences_about);
 
-		SharedPreferences settings = getSharedPreferences(LastFm.PREFS, 0);
+		SharedPreferences settings = getSharedPreferences(MainActivity.PREFS, 0);
 
 		findPreference("current_user").setSummary(
 				getString(R.string.prefs_current_user_sum, settings.getString("lastfm_user", "-")));
@@ -135,9 +135,9 @@ public class Preferences extends PreferenceActivity {
 
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				LastFMApplication.getInstance().logout();
+				ScrobbApplication.getInstance().logout();
 
-				Intent i = new Intent(Preferences.this, LastFm.class);
+				Intent i = new Intent(Preferences.this, MainActivity.class);
 
 				startActivity(i);
 				finish();
@@ -162,7 +162,7 @@ public class Preferences extends PreferenceActivity {
 	public void onResume() {
 		super.onResume();
 		try {
-			LastFMApplication.getInstance().tracker.trackPageView("/Preferences");
+			ScrobbApplication.getInstance().tracker.trackPageView("/Preferences");
 		} catch(Exception e) {
 			//Google Analytics doesn't appear to be thread safe
 		}

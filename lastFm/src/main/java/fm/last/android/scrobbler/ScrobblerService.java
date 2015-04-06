@@ -50,9 +50,9 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
 
 import fm.last.android.AndroidLastFmServerFactory;
-import fm.last.android.LastFMApplication;
-import fm.last.android.LastFm;
+import fm.last.android.MainActivity;
 import fm.last.android.R;
+import fm.last.android.ScrobbApplication;
 import fm.last.android.db.ScrobblerQueueDao;
 import fm.last.android.db.TrackDurationCacheDao;
 import fm.last.android.utils.AsyncTaskEx;
@@ -149,7 +149,7 @@ public class ScrobblerService extends Service {
 		super.onCreate();
 
 		logger = Logger.getLogger("fm.last.android.scrobbler");
-		mSession = LastFMApplication.getInstance().session;
+		mSession = ScrobbApplication.getInstance().session;
 
 		if(mSession == null || !PreferenceManager.getDefaultSharedPreferences(this).getBoolean("scrobble", true)) {
 			// User not authenticated, shutting down...
@@ -228,7 +228,7 @@ public class ScrobblerService extends Service {
 								}
 
 								try {
-									LastFMApplication.getInstance().unbindService(this);
+									ScrobbApplication.getInstance().unbindService(this);
 								} catch(IllegalArgumentException ignored) {
 								}
 							}
@@ -284,7 +284,7 @@ public class ScrobblerService extends Service {
 						}
 
 						try {
-							LastFMApplication.getInstance().unbindService(this);
+							ScrobbApplication.getInstance().unbindService(this);
 						} catch(IllegalArgumentException ignored) {
 						}
 					}
@@ -462,7 +462,7 @@ public class ScrobblerService extends Service {
 	public Intent intentFromMediaDB(Intent intent) {
 		boolean playing = false;
 
-		SharedPreferences settings = getSharedPreferences(LastFm.PREFS, 0);
+		SharedPreferences settings = getSharedPreferences(MainActivity.PREFS, 0);
 		boolean mediaPlayerIsPlaying = settings.getBoolean("mediaPlayerIsPlaying", false);
 
 		if(intent.getAction().endsWith("metachanged")) {

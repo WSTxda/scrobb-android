@@ -26,7 +26,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
 
-import fm.last.android.LastFMApplication;
+import fm.last.android.ScrobbApplication;
 import fm.last.android.db.ScrobblerQueueDao;
 import fm.last.api.Session;
 
@@ -38,8 +38,8 @@ public class MusicIntentReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Session s = LastFMApplication.getInstance().session;
-		if(s != null && s.getKey().length() > 0 && PreferenceManager.getDefaultSharedPreferences(LastFMApplication.getInstance()).getBoolean("scrobble", true)) {
+		Session s = ScrobbApplication.getInstance().session;
+		if(s != null && s.getKey().length() > 0 && PreferenceManager.getDefaultSharedPreferences(ScrobbApplication.getInstance()).getBoolean("scrobble", true)) {
 			if(intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
 				if(ScrobblerQueueDao.getInstance().getQueueSize() < 1) {
 					return;

@@ -24,7 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.preference.PreferenceManager;
 
-import fm.last.android.LastFMApplication;
+import fm.last.android.ScrobbApplication;
 
 /**
  * @author sam
@@ -34,7 +34,7 @@ public class SLSIntentReceiver extends MusicIntentReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if(PreferenceManager.getDefaultSharedPreferences(LastFMApplication.getInstance()).getBoolean("scrobble_sls", true)) {
+		if(PreferenceManager.getDefaultSharedPreferences(ScrobbApplication.getInstance()).getBoolean("scrobble_sls", true)) {
 			super.onReceive(context, intent);
 		}
 	}

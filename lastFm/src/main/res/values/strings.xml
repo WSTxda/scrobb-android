@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-	<string name="app_name">Last.fm</string>
-	<string name="ACCOUNT_TYPE">fm.last.android.account</string>
+	<string name="app_name">Scrobb</string>
 
 	<!-- all actions not specific to an activity -->
 	<string name="action_viewinfo">View Info</string>
@@ -41,7 +40,8 @@
 	<string name="newversion_info_text">Click here to download the update</string>
 
 	<!-- SignUp activity -->
-	<string name="signup_label">Last.fm: Sign Up</string>
+	<string name="signin_label">Scrobb: Sign into Last.fm</string>
+	<string name="signup_label">Scrobb: Sign Up to Last.fm</string>
 	<string name="signup_create_account">Create Account</string>
 	<string name="signup_username">Username</string>
 	<string name="signup_password">Password</string>
@@ -59,7 +59,7 @@
 	<string name="tag_add">Add</string>
 
 	<!-- Preferences activity -->
-	<string name="prefs_label">Last.fm: Preferences</string>
+	<string name="prefs_label">Scrobb: Preferences</string>
 	<string name="prefs_cat_scrobbler_title">Scrobbler</string>
 	<string name="prefs_scrobble_title">Enable Scrobbling</string>
 	<string name="prefs_scrobble_percentage">Set the percentage of a track\'s playtime required to scrobble.</string>
@@ -80,9 +80,9 @@
 	<string name="prefs_highquality_summary">Use high quality audio over cellular networks</string>
 	<string name="prefs_faststreaming_title">Fast Streaming</string>
 	<string name="prefs_faststreaming_summary">Transfer songs quickly</string>
-	<string name="prefs_cat_about_title">About Last.fm for Android</string>
+	<string name="prefs_cat_about_title">About Scrobb for Last.fm</string>
 	<string name="prefs_bugreport_title">Report a bug</string>
-	<string name="prefs_bugreport_summary">Email a bug report to Last.fm</string>
+	<string name="prefs_bugreport_summary">Email a bug report to outa[dev]</string>
 	<string name="prefs_bugreport_send">Send</string>
 	<string name="prefs_noisy_title">Headset interruption</string>
 	<string name="prefs_noisy_summary">Stops music playback when headset is disconnected</string>
@@ -217,7 +217,7 @@
 	<string name="playerservice_trial_almost_expired">You have just %1$d tracks left.</string>
 
 	<!-- Scrobbler service -->
-	<string name="scrobbler_label">Last.fm: Scrobbler</string>
+	<string name="scrobbler_label">Scrobb: Scrobbler</string>
 	<string name="scrobbler_ticker_text">Scrobbling: %1$s by %2$s</string>
 	<string name="scrobbler_info_title">Now Scrobbling</string>
 	<string name="scrobbler_trackloved">The track was marked as Loved.</string>

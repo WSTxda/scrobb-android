@@ -30,8 +30,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import fm.last.android.AndroidLastFmServerFactory;
-import fm.last.android.LastFMApplication;
 import fm.last.android.R;
+import fm.last.android.ScrobbApplication;
 import fm.last.android.utils.AsyncTaskEx;
 import fm.last.api.LastFmServer;
 import fm.last.api.Session;
@@ -68,7 +68,7 @@ public class SignUp extends Activity {
 	public void onResume() {
 		super.onResume();
 		try {
-			LastFMApplication.getInstance().tracker.trackPageView("/SignUp");
+			ScrobbApplication.getInstance().tracker.trackPageView("/SignUp");
 		} catch(Exception e) {
 			//Google Analytics doesn't appear to be thread safe
 		}
@@ -91,7 +91,7 @@ public class SignUp extends Activity {
 				server.signUp(username, password, email);
 
 				try {
-					LastFMApplication.getInstance().tracker.trackEvent("Clicks", // Category
+					ScrobbApplication.getInstance().tracker.trackEvent("Clicks", // Category
 							"signup", // Action
 							"", // Label
 							0); // Value
@@ -132,7 +132,7 @@ public class SignUp extends Activity {
 				finish();
 			} else {
 				if(mError != null) {
-					LastFMApplication.getInstance().presentError(SignUp.this, mError);
+					ScrobbApplication.getInstance().presentError(SignUp.this, mError);
 				}
 			}
 		}

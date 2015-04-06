@@ -46,7 +46,7 @@ import fm.last.api.Session;
 import fm.last.api.SessionInfo;
 import fm.last.api.WSError;
 
-public class LastFm extends Activity {
+public class MainActivity extends Activity {
 
 	public static final String PREFS = "LoginPrefs";
 
@@ -82,7 +82,7 @@ public class LastFm extends Activity {
 
 				Log.i("LastFm", "Query: " + query);
 			} else {
-				Intent intent = new Intent(LastFm.this, Preferences.class);
+				Intent intent = new Intent(MainActivity.this, Preferences.class);
 				startActivity(intent);
 				Intent i = new Intent("fr.outadev.lastfm.scrobb.scrobbler.FLUSH");
 				sendBroadcast(i);
@@ -139,7 +139,7 @@ public class LastFm extends Activity {
 				String password = mPassField.getText().toString();
 
 				if(user.length() == 0 || password.length() == 0) {
-					LastFMApplication.getInstance().presentError(v.getContext(), getResources().getString(R.string.ERROR_MISSINGINFO_TITLE),
+					ScrobbApplication.getInstance().presentError(v.getContext(), getResources().getString(R.string.ERROR_MISSINGINFO_TITLE),
 							getResources().getString(R.string.ERROR_MISSINGINFO));
 					return;
 				}
@@ -151,7 +151,7 @@ public class LastFm extends Activity {
 
 		mSignupButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(LastFm.this, SignUp.class);
+				Intent intent = new Intent(MainActivity.this, SignUp.class);
 				startActivityForResult(intent, 0);
 			}
 		});
@@ -245,13 +245,13 @@ public class LastFm extends Activity {
 
 				editor.apply();
 
-				LastFMApplication.getInstance().session = session;
+				ScrobbApplication.getInstance().session = session;
 
-				Intent i = new Intent(LastFm.this, Preferences.class);
+				Intent i = new Intent(MainActivity.this, Preferences.class);
 				startActivity(i);
 				finish();
 			} else if(wse != null || (e != null && e.getMessage() != null)) {
-				AlertDialog.Builder d = new AlertDialog.Builder(LastFm.this);
+				AlertDialog.Builder d = new AlertDialog.Builder(MainActivity.this);
 
 				d.setNeutralButton(R.string.common_ok, null);
 
