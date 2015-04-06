@@ -40,7 +40,6 @@ public class LastFmDbHelper extends SQLiteOpenHelper {
 
 	public void clearDatabase() {
 		ScrobblerQueueDao.getInstance().clearTable();
-		RecentStationsDao.getInstance().clearTable();
 		TrackDurationCacheDao.getInstance().clearTable();
 	}
 
@@ -50,12 +49,6 @@ public class LastFmDbHelper extends SQLiteOpenHelper {
 	 */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		// create the table for the recent stations
-		db.execSQL("CREATE TABLE IF NOT EXISTS " + RecentStationsDao.DB_TABLE_RECENTSTATIONS +
-				" (Url VARCHAR UNIQUE NOT NULL PRIMARY KEY, " +
-				"Name VARCHAR NOT NULL, " +
-				"Timestamp INTEGER NOT NULL)");
-
 		// create table for scrobbling queue
 		// the start time is used as PK because there can be only one track at a time
 		db.execSQL("CREATE TABLE IF NOT EXISTS " + ScrobblerQueueDao.DB_TABLE_SCROBBLERQUEUE +
@@ -85,7 +78,6 @@ public class LastFmDbHelper extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// for now we just drop everything and create it again
-		db.execSQL("DROP TABLE IF EXISTS " + RecentStationsDao.DB_TABLE_RECENTSTATIONS);
 		db.execSQL("DROP TABLE IF EXISTS " + ScrobblerQueueDao.DB_TABLE_SCROBBLERQUEUE);
 		db.execSQL("DROP TABLE IF EXISTS " + TrackDurationCacheDao.DB_TABLE_TRACKDURATIONS);
 

@@ -19,12 +19,12 @@ public class TrackDurationCacheDao extends AbstractDao<Track> {
 	 */
 	public static final String DB_TABLE_TRACKDURATIONS = "t_trackdurations";
 	/**
-	 * The {@link RecentStationsDao} singleton instance.
+	 * The {@link TrackDurationCacheDao} singleton instance.
 	 */
 	private static TrackDurationCacheDao instance = null;
 
 	/**
-	 * @return the {@link RecentStationsDao} singleton instance.
+	 * @return the {@link TrackDurationCacheDao} singleton instance.
 	 */
 	public static TrackDurationCacheDao getInstance() {
 		if(instance != null) {
