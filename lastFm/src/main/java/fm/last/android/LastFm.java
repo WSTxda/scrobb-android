@@ -29,9 +29,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -41,7 +39,6 @@ import android.widget.EditText;
 
 import fm.last.android.activity.Preferences;
 import fm.last.android.activity.SignUp;
-import fm.last.android.sync.AccountAuthenticatorService;
 import fm.last.android.utils.AsyncTaskEx;
 import fm.last.api.LastFmServer;
 import fm.last.api.MD5;
@@ -73,13 +70,6 @@ public class LastFm extends Activity {
 		String session_key = settings.getString("lastfm_session_key", "");
 		String pass;
 
-		if(Build.VERSION.SDK_INT >= 6) {
-			if(!AccountAuthenticatorService.hasLastfmAccount(this)) {
-				session_key = "";
-				LastFMApplication.getInstance().logout();
-			}
-		}
-
 		if(!user.equals("") && !session_key.equals("")) {
 			if(getIntent().getAction() != null && getIntent().getAction().equals(Intent.ACTION_SEARCH)) {
 				String query;
@@ -91,17 +81,6 @@ public class LastFm extends Activity {
 				}
 
 				Log.i("LastFm", "Query: " + query);
-			} else if(getIntent().getAction() != null && getIntent().getAction().equals("fm.last.android.sync.LOGIN")) {
-				Intent intent = getIntent();
-				Bundle extras = intent.getExtras();
-
-				if(extras != null) {
-					try {
-						AccountAuthenticatorService.addAccount(this, user, session_key, extras.getParcelable("accountAuthenticatorResponse"));
-					} catch(Exception e) {
-						Log.i("Last.fm", "Unable to add account");
-					}
-				}
 			} else {
 				Intent intent = new Intent(LastFm.this, Preferences.class);
 				startActivity(intent);
@@ -242,33 +221,6 @@ public class LastFm extends Activity {
 			return null;
 		}
 
-		Session login(String user, String pass) throws Exception, WSError {
-			user = user.toLowerCase().trim();
-			LastFmServer server = AndroidLastFmServerFactory.getSecureServer();
-			String md5Password = MD5.getInstance().hash(pass);
-			String authToken = MD5.getInstance().hash(user + md5Password);
-			Session session = server.getMobileSession(user, authToken);
-
-			if(session == null) {
-				throw (new WSError("auth.getMobileSession", "auth failure", WSError.ERROR_AuthenticationFailed));
-			}
-
-			server = AndroidLastFmServerFactory.getServer();
-			userSession = server.getSessionInfo(session.getKey());
-
-			if(Build.VERSION.SDK_INT >= 6) {
-				Parcelable authResponse = null;
-
-				if(getIntent() != null && getIntent().getExtras() != null) {
-					authResponse = getIntent().getExtras().getParcelable("accountAuthenticatorResponse");
-				}
-
-				AccountAuthenticatorService.addAccount(LastFm.this, user, pass, authResponse);
-			}
-
-			return session;
-		}
-
 		@Override
 		public void onPostExecute(Session session) {
 			mLoginButton.setEnabled(true);
@@ -338,6 +290,22 @@ public class LastFm extends Activity {
 					e.printStackTrace();
 				}
 			}
+		}
+
+		Session login(String user, String pass) throws Exception, WSError {
+			user = user.toLowerCase().trim();
+			LastFmServer server = AndroidLastFmServerFactory.getSecureServer();
+			String md5Password = MD5.getInstance().hash(pass);
+			String authToken = MD5.getInstance().hash(user + md5Password);
+			Session session = server.getMobileSession(user, authToken);
+
+			if(session == null) {
+				throw (new WSError("auth.getMobileSession", "auth failure", WSError.ERROR_AuthenticationFailed));
+			}
+
+			server = AndroidLastFmServerFactory.getServer();
+			userSession = server.getSessionInfo(session.getKey());
+			return session;
 		}
 	}
 

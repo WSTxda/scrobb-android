@@ -36,11 +36,11 @@
 
 	<application
 		android:name="LastFMApplication"
+		android:allowBackup="false"
 		android:icon="@drawable/icon"
 		android:installLocation="internalOnly"
 		android:label="@string/app_name"
-		android:theme="@style/BaseTheme"
-		android:allowBackup="false">
+		android:theme="@style/BaseTheme">
 
 		<activity
 			android:name="LastFm"
@@ -129,16 +129,6 @@
 			android:name=".scrobbler.ScrobblerService"
 			android:label="@string/scrobbler_label"
 			android:process=":scrobbler" />
-		<service
-			android:name=".sync.AccountAuthenticatorService"
-			android:exported="true"
-			android:process=":auth">
-			<intent-filter>
-				<action android:name="android.accounts.AccountAuthenticator" />
-			</intent-filter>
-			<meta-data
-				android:name="android.accounts.AccountAuthenticator"
-				android:resource="@xml/authenticator" />
-		</service>
+
 	</application>
 </manifest>

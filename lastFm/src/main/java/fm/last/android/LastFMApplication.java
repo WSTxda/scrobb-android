@@ -26,7 +26,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -35,7 +34,6 @@ import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 import java.util.Locale;
 
 import fm.last.android.db.LastFmDbHelper;
-import fm.last.android.sync.AccountAuthenticatorService;
 import fm.last.api.Session;
 import fm.last.api.WSError;
 import fm.last.util.UrlUtil;
@@ -201,10 +199,6 @@ public class LastFMApplication extends Application {
 
 		try {
 			LastFmDbHelper.getInstance().clearDatabase();
-
-			if(Build.VERSION.SDK_INT >= 6) {
-				AccountAuthenticatorService.removeLastfmAccount(this);
-			}
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
