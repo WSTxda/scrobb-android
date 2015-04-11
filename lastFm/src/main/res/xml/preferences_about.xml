@@ -2,45 +2,53 @@
 <PreferenceScreen
 	xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<PreferenceCategory android:title="@string/prefs_cat_about_title">
-		<Preference
-			android:key="tos"
-			android:title="@string/prefs_tos_title">
+	<PreferenceCategory
+		android:title="@string/prefs_cat_other_title">
 
-			<intent
-				android:action="android.intent.action.VIEW"
-				android:data="http://www.last.fm/legal/terms" />
-		</Preference>
+		<PreferenceScreen
+			android:title="@string/prefs_cat_about_title">
 
-		<Preference
-			android:key="privacy"
-			android:title="@string/prefs_privacy_title">
+			<Preference
+				android:key="tos"
+				android:title="@string/prefs_tos_title">
 
-			<intent
-				android:action="android.intent.action.VIEW"
-				android:data="http://www.last.fm/legal/privacy" />
-		</Preference>
+				<intent
+					android:action="android.intent.action.VIEW"
+					android:data="http://www.last.fm/legal/terms" />
+			</Preference>
 
-		<Preference
-			android:summary="@string/prefs_legal_sum"
-			android:title="@string/prefs_legal_title" />
+			<Preference
+				android:key="privacy"
+				android:title="@string/prefs_privacy_title">
 
-		<Preference
-			android:summary="@string/prefs_license_sum"
-			android:title="@string/prefs_license_title" />
+				<intent
+					android:action="android.intent.action.VIEW"
+					android:data="http://www.last.fm/legal/privacy" />
+			</Preference>
 
-		<Preference
-			android:summary="@string/prefs_source_sum"
-			android:title="@string/prefs_source_title">
+			<Preference
+				android:summary="@string/prefs_legal_sum"
+				android:title="@string/prefs_legal_title" />
 
-			<intent
-				android:action="android.intent.action.VIEW"
-				android:data="https://github.com/outadoc/scrobb-android" />
-		</Preference>
+			<Preference
+				android:summary="@string/prefs_license_sum"
+				android:title="@string/prefs_license_title" />
+
+			<Preference
+				android:summary="@string/prefs_source_sum"
+				android:title="@string/prefs_source_title">
+
+				<intent
+					android:action="android.intent.action.VIEW"
+					android:data="https://github.com/outadoc/scrobb-android" />
+			</Preference>
+
+		</PreferenceScreen>
 
 		<Preference
 			android:key="version"
 			android:title="@string/prefs_version_title" />
 
 	</PreferenceCategory>
+
 </PreferenceScreen>

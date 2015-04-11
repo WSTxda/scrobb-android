@@ -35,6 +35,7 @@
 	<string name="prefs_scrobble_wifi_only_title">Scrobbler uniquement en Wi-Fi</string>
 	<string name="prefs_scrobble_wifi_only_summary">Mettre en attente les scrobbles tant que le Wi-Fi n\'est pas disponible</string>
 	<string name="prefs_cat_about_title">À propos de Scrobb pour Last.fm</string>
+	<string name="prefs_cat_other_title">Autres</string>
 	<string name="prefs_tos_title">Conditions d\'utilisation</string>
 	<string name="prefs_privacy_title">Politique de confidentialité</string>
 	<string name="prefs_version_title">Version</string>
@@ -46,7 +47,7 @@
 	<string name="prefs_license_sum">This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</string>
 
 	<string name="prefs_legal_title">Mentions légales</string>
-	<string name="prefs_legal_sum">© 2015 Baptiste Candellier – outa[dev]\n© 2005–2009 Last.fm Ltd.\nPortions contributed by Casey Link, Lukasz Wisniewski, Mike Jennings, and Michael Novak Jr.\n\nLast.fm est une marque déposée de CBS Interactive, et n'est en aucun cas impliqué dans Scrobb.</string>
+	<string name="prefs_legal_sum">© 2015 Baptiste Candellier – outa[dev]\n© 2005–2009 Last.fm Ltd.\nPortions contributed by Casey Link, Lukasz Wisniewski, Mike Jennings, and Michael Novak Jr.\n\nLast.fm est une marque déposée de CBS Interactive, et n\'est en aucun cas impliqué dans Scrobb.</string>
 
 	<string name="prefs_source_title">Code source</string>
 	<string name="prefs_source_sum">Ce projet est basé sur l\'application Last.fm officielle, et les sources sont disponibles sur Github</string>
