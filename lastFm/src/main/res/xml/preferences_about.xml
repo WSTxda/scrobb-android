@@ -22,6 +22,10 @@
 		</Preference>
 
 		<Preference
+			android:summary="@string/prefs_legal_sum"
+			android:title="@string/prefs_legal_title" />
+
+		<Preference
 			android:summary="@string/prefs_license_sum"
 			android:title="@string/prefs_license_title" />
 
